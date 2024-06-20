@@ -2,6 +2,8 @@ import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_list/domain/model/importance.dart';
+import 'package:todo_list/domain/repository/todo_repository.dart';
+import 'package:todo_list/internal/di/configure_dependencies.dart';
 import 'package:todo_list/util/wm_base.dart';
 import 'todo_detail_screen_model.dart';
 import 'todo_detail_screen_widget.dart';
@@ -21,7 +23,10 @@ abstract interface class ITodoDetailScreenWidgetModel
 
 TodoDetailScreenWidgetModel defaultTodoDetailScreenWidgetModelFactory(
     BuildContext context) {
-  return TodoDetailScreenWidgetModel(TodoDetailScreenModel());
+  return TodoDetailScreenWidgetModel(
+    TodoDetailScreenModel(),
+    todoRepository: getIt.get<TodoRepository>(),
+  );
 }
 
 // TODO: cover with documentation
@@ -30,7 +35,12 @@ class TodoDetailScreenWidgetModel
     extends WidgetModel<TodoDetailScreenWidget, TodoDetailScreenModel>
     with ThemeProvider
     implements ITodoDetailScreenWidgetModel {
-  TodoDetailScreenWidgetModel(super.model);
+  TodoDetailScreenWidgetModel(
+    super.model, {
+    required this.todoRepository,
+  });
+
+  final TodoRepository todoRepository;
 
   @override
   EntityStateNotifier<Importance> selectedImportance = EntityStateNotifier();

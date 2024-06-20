@@ -20,7 +20,7 @@ Todo _$TodoFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Todo {
-  String? get id => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   bool get done => throw _privateConstructorUsedError;
   DateTime? get deadline => throw _privateConstructorUsedError;
@@ -37,7 +37,7 @@ abstract class $TodoCopyWith<$Res> {
       _$TodoCopyWithImpl<$Res, Todo>;
   @useResult
   $Res call(
-      {String? id,
+      {String id,
       String text,
       bool done,
       DateTime? deadline,
@@ -57,17 +57,17 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
+    Object? id = null,
     Object? text = null,
     Object? done = null,
     Object? deadline = freezed,
     Object? importance = freezed,
   }) {
     return _then(_value.copyWith(
-      id: freezed == id
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       text: null == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -96,7 +96,7 @@ abstract class _$$TodoImplCopyWith<$Res> implements $TodoCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String? id,
+      {String id,
       String text,
       bool done,
       DateTime? deadline,
@@ -113,17 +113,17 @@ class __$$TodoImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
+    Object? id = null,
     Object? text = null,
     Object? done = null,
     Object? deadline = freezed,
     Object? importance = freezed,
   }) {
     return _then(_$TodoImpl(
-      id: freezed == id
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       text: null == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -148,7 +148,7 @@ class __$$TodoImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$TodoImpl implements _Todo {
   const _$TodoImpl(
-      {this.id,
+      {required this.id,
       required this.text,
       required this.done,
       this.deadline,
@@ -158,7 +158,7 @@ class _$TodoImpl implements _Todo {
       _$$TodoImplFromJson(json);
 
   @override
-  final String? id;
+  final String id;
   @override
   final String text;
   @override
@@ -208,7 +208,7 @@ class _$TodoImpl implements _Todo {
 
 abstract class _Todo implements Todo {
   const factory _Todo(
-      {final String? id,
+      {required final String id,
       required final String text,
       required final bool done,
       final DateTime? deadline,
@@ -217,7 +217,7 @@ abstract class _Todo implements Todo {
   factory _Todo.fromJson(Map<String, dynamic> json) = _$TodoImpl.fromJson;
 
   @override
-  String? get id;
+  String get id;
   @override
   String get text;
   @override

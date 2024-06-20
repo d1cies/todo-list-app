@@ -8,7 +8,7 @@ part 'todo.g.dart';
 @freezed
 class Todo with _$Todo {
   const factory Todo({
-    String? id,
+    required String id,
     required String text,
     required bool done,
     DateTime? deadline,

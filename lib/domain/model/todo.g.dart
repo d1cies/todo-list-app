@@ -7,7 +7,7 @@ part of 'todo.dart';
 // **************************************************************************
 
 _$TodoImpl _$$TodoImplFromJson(Map<String, dynamic> json) => _$TodoImpl(
-      id: json['id'] as String?,
+      id: json['id'] as String,
       text: json['text'] as String,
       done: json['done'] as bool,
       deadline: json['deadline'] == null
