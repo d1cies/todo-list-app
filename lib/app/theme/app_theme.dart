@@ -14,6 +14,10 @@ class AppTheme {
       ).copyWith(
         brightness: Brightness.light,
         scaffoldBackgroundColor: AppColor.lightBackPrimary,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: AppColor.lightBackPrimary,
+          surfaceTintColor: AppColor.lightBackPrimary,
+        ),
         extensions: [
           const ThemeColors(
             supportSeparator: AppColor.lightSeparator,

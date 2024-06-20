@@ -26,7 +26,6 @@ class TodoListScreenWidget
               final scrolled = constraints.scrollOffset > 70;
               return SliverAppBar(
                 backgroundColor: wm.color.backPrimary,
-                // искал эту настройку полжизни
                 surfaceTintColor: wm.color.backPrimary,
                 automaticallyImplyLeading: false,
                 pinned: true,
@@ -69,12 +68,10 @@ class TodoListScreenWidget
                   background: Container(
                     alignment: AlignmentDirectional.centerStart,
                     color: wm.color.green,
-
                   ),
                   secondaryBackground: Container(
                     alignment: AlignmentDirectional.centerEnd,
                     color: wm.color.red,
-
                   ),
                   onDismissed: (DismissDirection direction) {
                     if (direction == DismissDirection.endToStart) {}
@@ -87,6 +84,16 @@ class TodoListScreenWidget
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: wm.addNewTodo,
+        elevation: 5,
+        shape: const CircleBorder(),
+        backgroundColor: wm.color.blue,
+        child: Icon(
+          Icons.add,
+          color: wm.color.white,
+        ),
       ),
     );
   }
