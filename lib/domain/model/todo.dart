@@ -7,7 +7,7 @@ part 'todo.g.dart';
 
 @freezed
 class Todo with _$Todo {
-  const factory Todo({
+  factory Todo({
     required String id,
     required String text,
     required bool done,
@@ -15,6 +15,18 @@ class Todo with _$Todo {
     Importance? importance,
   }) = _Todo;
 
-  factory Todo.fromJson(Map<String, dynamic> json)
-  => _$TodoFromJson(json);
+  factory Todo.create({
+    required String text,
+    required bool done,
+    DateTime? deadline,
+    Importance? importance,
+  }) => Todo(
+    id:  const Uuid().v4(),
+    text: text,
+    done: done,
+    deadline: deadline,
+    importance: importance,
+  );
+
+  factory Todo.fromJson(Map<String, dynamic> json) => _$TodoFromJson(json);
 }
