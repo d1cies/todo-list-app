@@ -23,22 +23,27 @@ class LocalTodoRepository implements TodoRepository {
   List<Todo> _todoList = [];
 
   @override
-  Future<List<Todo>> getTodoList() async {
+  Future<void> init() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final rawData = prefs.getString(key);
-      if (rawData == null) return [];
+      if (rawData == null) return;
       final jsonList = await compute(jsonDecode, rawData) as List<dynamic>;
       final todos = jsonList.map((json) => Todo.fromJson(json)).toList();
       _todoList = todos;
       _todoListStreamController.add(_todoList);
       logger.i('Todos loaded');
-      return _todoList;
     } catch (e, s) {
       logger.f('TodoList load error', error: e, stackTrace: s);
-      return [];
     }
   }
+
+  @override
+  FutureOr<List<Todo>> getTodoList() => _todoList;
+
+  @override
+  FutureOr<List<Todo>> getNotDoneTodoList() =>
+      _todoList.where((todo) => !todo.done).toList();
 
   @override
   Future<void> saveTodo(Todo todo) async {
@@ -55,6 +60,7 @@ class LocalTodoRepository implements TodoRepository {
       logger.i('Todo saved');
     } catch (e, s) {
       logger.f('Error saving the todo', error: e, stackTrace: s);
+      rethrow;
     }
   }
 
@@ -73,6 +79,15 @@ class LocalTodoRepository implements TodoRepository {
       logger.i('Todo deleted');
     } catch (e, s) {
       logger.f('Error deleting the todo', error: e, stackTrace: s);
+      rethrow;
     }
+  }
+
+  @override
+  int get countDoneTodos => _todoList.where((todo) => todo.done).length;
+
+  @override
+  void dispose() {
+    _todoListStreamController.close();
   }
 }
