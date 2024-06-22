@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/app/theme/constant/app_color.dart';
-import 'package:todo_list/app/theme/theme_colors.dart';
+import 'package:todo_list/app/theme/constant/app_text.dart';
+import 'package:todo_list/app/theme/theme_color/theme_colors.dart';
+import 'package:todo_list/app/theme/theme_text/theme_text.dart';
 
 class AppTheme {
   final ThemeData themeData;
@@ -17,6 +19,35 @@ class AppTheme {
         appBarTheme: const AppBarTheme(
           backgroundColor: AppColor.lightBackPrimary,
           surfaceTintColor: AppColor.lightBackPrimary,
+        ),
+        checkboxTheme: CheckboxThemeData(
+          side: WidgetStateBorderSide.resolveWith(
+            (states) {
+              if (!states.contains(WidgetState.selected)) {
+                return const BorderSide(
+                  width: 2.0,
+                  color: AppColor.lightSeparator,
+                );
+              }
+              return null;
+            },
+          ),
+          fillColor: WidgetStateProperty.resolveWith(
+            (states) {
+              if (states.contains(WidgetState.selected)) {
+                return AppColor.lightGreen;
+              }
+              return Colors.transparent;
+            },
+          ),
+          checkColor: WidgetStateProperty.resolveWith(
+            (states) {
+              if (states.contains(WidgetState.selected)) {
+                return AppColor.lightWhite;
+              }
+              return Colors.transparent;
+            },
+          ),
         ),
         extensions: [
           const ThemeColors(
@@ -35,6 +66,23 @@ class AppTheme {
             backPrimary: AppColor.lightBackPrimary,
             backSecondary: AppColor.lightBackSecondary,
             backElevated: AppColor.lightBackElevated,
+          ),
+          ThemeText(
+            largeTitle: AppText.largeTitle.copyWith(
+              color: AppColor.lightLabelPrimary,
+            ),
+            title: AppText.title.copyWith(
+              color: AppColor.lightLabelPrimary,
+            ),
+            button: AppText.button.copyWith(
+              color: AppColor.lightLabelPrimary,
+            ),
+            body: AppText.body.copyWith(
+              color: AppColor.lightLabelPrimary,
+            ),
+            subhead: AppText.subhead.copyWith(
+              color: AppColor.lightLabelPrimary,
+            ),
           ),
         ],
       ),
