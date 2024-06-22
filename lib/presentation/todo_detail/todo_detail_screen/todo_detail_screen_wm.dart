@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_list/domain/model/importance.dart';
+import 'package:todo_list/domain/model/todo.dart';
 import 'package:todo_list/domain/repository/todo_repository.dart';
 import 'package:todo_list/internal/di/configure_dependencies.dart';
 import 'package:todo_list/util/wm_base.dart';
@@ -60,6 +63,11 @@ class TodoDetailScreenWidgetModel
   @override
   final FocusNode todoTextFocusNode = FocusNode();
 
+  @override
+  void initWidgetModel() {
+    super.initWidgetModel();
+
+  }
   @override
   void dispose() {
     todoTextController.dispose();

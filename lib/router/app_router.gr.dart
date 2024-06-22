@@ -23,6 +23,7 @@ abstract class _$AppRouter extends RootStackRouter {
         child: TodoDetailScreenWidget(
           key: args.key,
           wmFactory: args.wmFactory,
+          todo: args.todo,
         ),
       );
     },
@@ -48,12 +49,14 @@ class TodoDetailRoute extends PageRouteInfo<TodoDetailRouteArgs> {
     WidgetModel<ElementaryWidget<IWidgetModel>, ElementaryModel> Function(
             BuildContext)
         wmFactory = defaultTodoDetailScreenWidgetModelFactory,
+    Todo? todo,
     List<PageRouteInfo>? children,
   }) : super(
           TodoDetailRoute.name,
           args: TodoDetailRouteArgs(
             key: key,
             wmFactory: wmFactory,
+            todo: todo,
           ),
           initialChildren: children,
         );
@@ -68,6 +71,7 @@ class TodoDetailRouteArgs {
   const TodoDetailRouteArgs({
     this.key,
     this.wmFactory = defaultTodoDetailScreenWidgetModelFactory,
+    this.todo,
   });
 
   final Key? key;
@@ -75,9 +79,11 @@ class TodoDetailRouteArgs {
   final WidgetModel<ElementaryWidget<IWidgetModel>, ElementaryModel> Function(
       BuildContext) wmFactory;
 
+  final Todo? todo;
+
   @override
   String toString() {
-    return 'TodoDetailRouteArgs{key: $key, wmFactory: $wmFactory}';
+    return 'TodoDetailRouteArgs{key: $key, wmFactory: $wmFactory, todo: $todo}';
   }
 }
 

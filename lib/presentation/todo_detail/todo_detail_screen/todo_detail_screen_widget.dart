@@ -3,6 +3,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_list/domain/model/importance.dart';
+import 'package:todo_list/domain/model/todo.dart';
 import 'todo_detail_screen_wm.dart';
 
 // TODO: cover with documentation
@@ -10,9 +11,12 @@ import 'todo_detail_screen_wm.dart';
 @RoutePage()
 class TodoDetailScreenWidget
     extends ElementaryWidget<ITodoDetailScreenWidgetModel> {
+  final Todo? todo;
+
   const TodoDetailScreenWidget({
     Key? key,
     WidgetModelFactory wmFactory = defaultTodoDetailScreenWidgetModelFactory,
+    this.todo,
   }) : super(wmFactory, key: key);
 
   @override
@@ -66,9 +70,11 @@ class TodoDetailScreenWidget
                 leadingIcon: null,
                 trailingIcon: const SizedBox.shrink(),
                 initialSelection: wm.importanceList.first,
-                inputDecorationTheme: InputDecorationTheme(
-                    activeIndicatorBorder:
-                        BorderSide(color: Colors.transparent)),
+                inputDecorationTheme: const InputDecorationTheme(
+                  activeIndicatorBorder: BorderSide(
+                    color: Colors.transparent,
+                  ),
+                ),
                 dropdownMenuEntries:
                     wm.importanceList.map<DropdownMenuEntry<Importance>>(
                   (importance) {
