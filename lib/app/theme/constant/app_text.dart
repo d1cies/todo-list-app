@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 final class AppText {
   static const fontFamily = 'Roboto';
-  
+
   static const TextStyle largeTitle = TextStyle(
     fontFamily: fontFamily,
     fontSize: 32,

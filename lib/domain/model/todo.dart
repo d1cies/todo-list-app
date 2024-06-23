@@ -20,13 +20,14 @@ class Todo with _$Todo {
     required bool done,
     DateTime? deadline,
     Importance? importance,
-  }) => Todo(
-    id:  const Uuid().v4(),
-    text: text,
-    done: done,
-    deadline: deadline,
-    importance: importance,
-  );
+  }) =>
+      Todo(
+        id: const Uuid().v4(),
+        text: text,
+        done: done,
+        deadline: deadline,
+        importance: importance,
+      );
 
   factory Todo.fromJson(Map<String, dynamic> json) => _$TodoFromJson(json);
 }

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:elementary/elementary.dart';
-import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_list/domain/model/importance.dart';
 import 'package:todo_list/domain/model/todo.dart';
@@ -13,8 +12,6 @@ import 'todo_detail_screen_widget.dart';
 
 abstract interface class ITodoDetailScreenWidgetModel
     implements IWidgetModel, IThemeProvider {
-  // EntityStateNotifier<Todo> get todoStateController;
-
   ValueNotifier<Importance> get selectedImportanceController;
 
   ValueNotifier<bool> get deadlineEnableController;
@@ -60,11 +57,6 @@ class TodoDetailScreenWidgetModel
   });
 
   final TodoRepository todoRepository;
-
-  @override
-  // final EntityStateNotifier<Todo> todoStateController = EntityStateNotifier();
-
-  // Todo? get todo => todoStateController.value.data;
 
   @override
   ValueNotifier<Importance> selectedImportanceController =
@@ -170,25 +162,26 @@ class TodoDetailScreenWidgetModel
 
   Future<void> selectDate() async {
     deadlineController.value = await showDatePicker(
-        // locale: const Locale('ru', 'RU'),
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime.now().add(
-          const Duration(days: 1000),
-        ),
-        builder: (context, child) {
-          return Theme(
-            data: ThemeData.light().copyWith(
-              colorScheme: ColorScheme.light(
-                primary: color.blue,
-                surface: color.white,
-                onSurface: color.labelPrimary
-              ),
+      // locale: const Locale('ru', 'RU'),
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(
+        const Duration(days: 1000),
+      ),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              primary: color.blue,
+              surface: color.white,
+              onSurface: color.labelPrimary,
             ),
-            child: child!,
-          );
-        });
+          ),
+          child: child!,
+        );
+      },
+    );
     if (deadlineController.value == null) {
       switchDeadline(val: false);
     }

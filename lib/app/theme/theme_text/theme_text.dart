@@ -4,9 +4,7 @@ import 'package:theme_tailor_annotation/theme_tailor_annotation.dart';
 part 'theme_text.tailor.dart';
 
 @TailorMixin()
-class ThemeText extends ThemeExtension<ThemeText>
-    with _$ThemeTextTailorMixin {
-
+class ThemeText extends ThemeExtension<ThemeText> with _$ThemeTextTailorMixin {
   @override
   final TextStyle largeTitle;
   @override

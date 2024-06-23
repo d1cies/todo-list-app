@@ -19,6 +19,4 @@ final class AppColor {
   static const Color lightBackPrimary = Color(0xFFF7F6F2);
   static const Color lightBackSecondary = Color(0xFFFFFFFF);
   static const Color lightBackElevated = Color(0xFFFFFFFF);
-
-
 }
