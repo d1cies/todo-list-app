@@ -170,14 +170,25 @@ class TodoDetailScreenWidgetModel
 
   Future<void> selectDate() async {
     deadlineController.value = await showDatePicker(
-      // locale: const Locale('ru', 'RU'),
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(
-        const Duration(days: 1000),
-      ),
-    );
+        // locale: const Locale('ru', 'RU'),
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime.now().add(
+          const Duration(days: 1000),
+        ),
+        builder: (context, child) {
+          return Theme(
+            data: ThemeData.light().copyWith(
+              colorScheme: ColorScheme.light(
+                primary: color.blue,
+                surface: color.white,
+                onSurface: color.labelPrimary
+              ),
+            ),
+            child: child!,
+          );
+        });
     if (deadlineController.value == null) {
       switchDeadline(val: false);
     }

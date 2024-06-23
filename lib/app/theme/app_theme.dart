@@ -64,12 +64,6 @@ class AppTheme {
             ),
           ),
         ),
-        switchTheme: SwitchThemeData(
-          // thumbColor: WidgetStateProperty.all(AppColor.lightWhite),
-          // overlayColor: WidgetStateProperty.all(AppColor.lightGreen),
-          // trackColor: WidgetStateProperty.all(AppColor.lightGreen),
-          // trackOutlineColor: WidgetStateProperty.all(AppColor.lightGreen),
-        ),
         extensions: [
           const ThemeColors(
             supportSeparator: AppColor.lightSeparator,
