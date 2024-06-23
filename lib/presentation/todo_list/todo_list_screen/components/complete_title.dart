@@ -20,9 +20,6 @@ class CompleteTitle extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       title: Text(
         'Выполнено - $doneTodos',
-        // style: styles.bodyLarge?.copyWith(
-        //   color: extraColors?.onBackgroundVariant,
-        // ),
       ),
       trailing: IconButton(
         icon: Icon(

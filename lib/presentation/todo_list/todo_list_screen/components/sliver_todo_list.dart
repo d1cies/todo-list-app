@@ -46,16 +46,9 @@ class SliverTodoList extends StatelessWidget {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       sliver: SliverList.builder(
-        itemCount: todos.length + 1,
+        itemCount: todos.length,
         itemBuilder: (context, index) {
-          if (index == 0) {
-            return CompleteTitle(
-              doneTodos: wm.doneTodosCount,
-              icon: showDoneTodos ? Icons.visibility_off : Icons.visibility,
-              switchShowDone: wm.changeDoneTodosVisibility,
-            );
-          }
-          final todo = todos[index - 1];
+          final todo = todos[index];
           return TodoItem(
             todo: todo,
             borderRadius: _buildBorderRadius(index, todos.length),

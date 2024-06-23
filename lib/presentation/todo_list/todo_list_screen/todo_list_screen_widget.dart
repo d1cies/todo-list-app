@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:todo_list/domain/model/todo.dart';
 import 'package:todo_list/presentation/common_components/loading_indicator.dart';
+import 'package:todo_list/presentation/todo_list/todo_list_screen/components/sliver_persistent_app_bar.dart';
 import 'package:todo_list/presentation/todo_list/todo_list_screen/components/sliver_todo_list.dart';
 import 'package:todo_list/presentation/todo_list/todo_list_screen/components/visibility_button.dart';
 import 'todo_list_screen_wm.dart';
@@ -24,38 +25,20 @@ class TodoListScreenWidget
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverLayoutBuilder(
-            builder: (BuildContext context, SliverConstraints constraints) {
-              final scrolled = constraints.scrollOffset > 70;
-              return SliverAppBar(
-                backgroundColor: wm.color.backPrimary,
-                surfaceTintColor: wm.color.backPrimary,
-                automaticallyImplyLeading: false,
-                pinned: true,
-                floating: true,
-                expandedHeight: 150.0,
-                collapsedHeight: 70,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: ColoredBox(
-                    color: wm.color.backPrimary,
-                  ),
-                  titlePadding: EdgeInsets.only(left: 60.0, bottom: 17.0),
-                  expandedTitleScale: 2,
-                  title: const Text('Мои дела'),
+          ValueListenableBuilder(
+            valueListenable: wm.showDoneTodosController,
+            builder: (BuildContext context, bool showDoneTodos, _) {
+              return SliverPersistentHeader(
+                delegate: SliverPersistentAppBar(
+                  minHeight: 88,
+                  expandedHeight: 164,
+                  doneTodos: wm.doneTodosCount,
+                  showDoneTodos: showDoneTodos,
+                  switchShowDone: wm.changeDoneTodosVisibility,
                 ),
-                elevation: 0,
-                actions: [
-                  if (scrolled) const VisibilityButton(),
-                ],
               );
             },
           ),
-          // const SliverPadding(
-          //   padding: EdgeInsets.symmetric(horizontal: 16.0),
-          //   sliver: SliverToBoxAdapter(
-          //     child: Text('Выполнено — 5'),
-          //   ),
-          // ),
           SliverPadding(
             padding: const EdgeInsets.symmetric(
               vertical: 8.0,
@@ -65,9 +48,8 @@ class TodoListScreenWidget
               builder: (context, showDoneTodos, _) {
                 return EntityStateNotifierBuilder(
                   listenableEntityState: wm.todoListState,
-                  loadingBuilder: ((_, __) => const SliverToBoxAdapter(
-                        child: LoadingIndicator()
-                      )),
+                  loadingBuilder: ((_, __) =>
+                      const SliverToBoxAdapter(child: LoadingIndicator())),
                   builder: (context, data) {
                     final todos = data ?? [];
                     if (todos.isEmpty) {
