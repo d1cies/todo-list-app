@@ -3,11 +3,9 @@ import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:todo_list/domain/model/todo.dart';
 import 'package:todo_list/presentation/common_components/loading_indicator.dart';
 import 'package:todo_list/presentation/todo_list/todo_list_screen/components/sliver_persistent_app_bar.dart';
 import 'package:todo_list/presentation/todo_list/todo_list_screen/components/sliver_todo_list.dart';
-import 'package:todo_list/presentation/todo_list/todo_list_screen/components/visibility_button.dart';
 import 'todo_list_screen_wm.dart';
 
 // TODO: cover with documentation
