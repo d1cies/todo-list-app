@@ -12,6 +12,7 @@ class TodoListApp extends StatelessWidget {
     return MaterialApp.router(
       routerConfig: _appRouter.config(),
       theme: AppTheme.light().themeData,
+      debugShowCheckedModeBanner: false,
     );
   }
 }

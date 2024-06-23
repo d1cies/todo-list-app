@@ -17,6 +17,8 @@ abstract interface class ITodoListScreenWidgetModel
 
   ValueNotifier<bool> get showDoneTodosController;
 
+  ValueNotifier<int> get doneTodoCountController;
+
   void createTodo(Todo todo);
 
   void completeTodo(Todo todo);
@@ -57,12 +59,16 @@ class TodoListScreenWidgetModel
   @override
   final ValueNotifier<bool> showDoneTodosController = ValueNotifier(false);
 
+  @override
+  final ValueNotifier<int> doneTodoCountController = ValueNotifier(0);
+
   StreamSubscription<List<Todo>>? todoListStreamSb;
 
   @override
   Future<void> initWidgetModel() async {
     super.initWidgetModel();
     todoListStreamSb = todoRepository.todoListStream.listen((_) {
+      doneTodoCountController.value = doneTodosCount;
       loadTodoList();
     });
   }

@@ -29,16 +29,21 @@ class TodoListScreenWidget
           ValueListenableBuilder(
             valueListenable: wm.showDoneTodosController,
             builder: (BuildContext context, bool showDoneTodos, _) {
-              return SliverPersistentHeader(
-                pinned: true,
-                floating: false,
-                delegate: SliverPersistentAppBar(
-                  minHeight: 88,
-                  expandedHeight: 164,
-                  doneTodos: wm.doneTodosCount,
-                  showDoneTodos: showDoneTodos,
-                  switchShowDone: wm.changeDoneTodosVisibility,
-                ),
+              return ValueListenableBuilder(
+                valueListenable: wm.doneTodoCountController,
+                builder: (context, doneTodosCount, _) {
+                  return SliverPersistentHeader(
+                    pinned: true,
+                    floating: false,
+                    delegate: SliverPersistentAppBar(
+                      minHeight: 88,
+                      expandedHeight: 164,
+                      doneTodos: doneTodosCount,
+                      showDoneTodos: showDoneTodos,
+                      switchShowDone: wm.changeDoneTodosVisibility,
+                    ),
+                  );
+                },
               );
             },
           ),
