@@ -13,15 +13,31 @@ import 'todo_detail_screen_widget.dart';
 
 abstract interface class ITodoDetailScreenWidgetModel
     implements IWidgetModel, IThemeProvider {
-  EntityStateNotifier<Importance> get selectedImportance;
+  // EntityStateNotifier<Todo> get todoStateController;
+
+  ValueNotifier<Importance> get selectedImportanceController;
+
+  ValueNotifier<bool> get deadlineEnableController;
+
+  ValueNotifier<DateTime?> get deadlineController;
 
   TextEditingController get todoTextController;
 
   FocusNode get todoTextFocusNode;
 
-  List<Importance> get importanceList;
+  Map<Importance, String> get importanceMap;
 
   void close();
+
+  void changeTodoImportance(Importance importance);
+
+  void saveTodo();
+
+  void deleteTodo(String? id);
+
+  void selectImportance(Importance importance);
+
+  void switchDeadline({bool? val});
 }
 
 TodoDetailScreenWidgetModel defaultTodoDetailScreenWidgetModelFactory(
@@ -46,16 +62,26 @@ class TodoDetailScreenWidgetModel
   final TodoRepository todoRepository;
 
   @override
-  EntityStateNotifier<Importance> selectedImportance = EntityStateNotifier();
+  // final EntityStateNotifier<Todo> todoStateController = EntityStateNotifier();
+
+  // Todo? get todo => todoStateController.value.data;
 
   @override
-  List<Importance> importanceList = List.of(
-    [
-      Importance.no,
-      Importance.low,
-      Importance.high,
-    ],
-  );
+  ValueNotifier<Importance> selectedImportanceController =
+      ValueNotifier(Importance.no);
+
+  @override
+  ValueNotifier<bool> deadlineEnableController = ValueNotifier(false);
+
+  @override
+  ValueNotifier<DateTime?> deadlineController = ValueNotifier(null);
+
+  @override
+  Map<Importance, String> importanceMap = {
+    Importance.no: 'Нет',
+    Importance.low: 'Низкий',
+    Importance.high: '!! Высокий',
+  };
 
   @override
   final TextEditingController todoTextController = TextEditingController();
@@ -66,8 +92,9 @@ class TodoDetailScreenWidgetModel
   @override
   void initWidgetModel() {
     super.initWidgetModel();
-
+    initTodo();
   }
+
   @override
   void dispose() {
     todoTextController.dispose();
@@ -75,8 +102,84 @@ class TodoDetailScreenWidgetModel
     super.dispose();
   }
 
+  void initTodo() {
+    final todo = widget.todo;
+    if (todo != null) {
+      todoTextController.text = widget.todo?.text ?? '';
+      selectedImportanceController.value =
+          widget.todo?.importance ?? Importance.no;
+      if (todo.deadline != null) {
+        deadlineEnableController.value = true;
+        deadlineController.value = widget.todo?.deadline;
+      }
+    }
+  }
+
   @override
   void close() {
     router.maybePop();
+  }
+
+  @override
+  void changeTodoImportance(Importance importance) {
+    selectedImportanceController.value = importance;
+  }
+
+  @override
+  Future<void> saveTodo() async {
+    if (widget.todo == null) {
+      final todo = Todo.create(
+        text: todoTextController.text,
+        importance: selectedImportanceController.value,
+        done: widget.todo?.done ?? false,
+        deadline: deadlineController.value,
+      );
+      await todoRepository.saveTodo(todo);
+    } else {
+      await todoRepository.saveTodo(
+        widget.todo!.copyWith(
+          text: todoTextController.text,
+          importance: selectedImportanceController.value,
+          done: widget.todo?.done ?? false,
+          deadline: deadlineController.value,
+        ),
+      );
+    }
+    close();
+  }
+
+  @override
+  Future<void> deleteTodo(String? id) async {
+    if (id == null) return;
+    await todoRepository.deleteTodo(id);
+  }
+
+  @override
+  void selectImportance(Importance importance) =>
+      selectedImportanceController.value = importance;
+
+  @override
+  Future<void> switchDeadline({bool? val}) async {
+    deadlineEnableController.value = val ?? !deadlineEnableController.value;
+    if (deadlineEnableController.value) {
+      await selectDate();
+    } else {
+      deadlineController.value = null;
+    }
+  }
+
+  Future<void> selectDate() async {
+    deadlineController.value = await showDatePicker(
+      // locale: const Locale('ru', 'RU'),
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(
+        const Duration(days: 1000),
+      ),
+    );
+    if (deadlineController.value == null) {
+      switchDeadline(val: false);
+    }
   }
 }

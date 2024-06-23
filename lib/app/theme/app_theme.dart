@@ -49,6 +49,27 @@ class AppTheme {
             },
           ),
         ),
+        dropdownMenuTheme: DropdownMenuThemeData(
+          inputDecorationTheme: InputDecorationTheme(
+            labelStyle: AppText.body.copyWith(
+              color: AppColor.lightSeparator,
+            ),
+            border: const OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.transparent,
+              ),
+            ),
+            activeIndicatorBorder: const BorderSide(
+              color: Colors.transparent,
+            ),
+          ),
+        ),
+        switchTheme: SwitchThemeData(
+          // thumbColor: WidgetStateProperty.all(AppColor.lightWhite),
+          // overlayColor: WidgetStateProperty.all(AppColor.lightGreen),
+          // trackColor: WidgetStateProperty.all(AppColor.lightGreen),
+          // trackOutlineColor: WidgetStateProperty.all(AppColor.lightGreen),
+        ),
         extensions: [
           const ThemeColors(
             supportSeparator: AppColor.lightSeparator,

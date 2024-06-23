@@ -21,7 +21,7 @@ abstract interface class ITodoListScreenWidgetModel
 
   void completeTodo(Todo todo);
 
-  void removeTodo(String todoId);
+  void deleteTodo(String todoId);
 
   void toTodoDetail(Todo? todo);
 
@@ -84,7 +84,7 @@ class TodoListScreenWidgetModel
   void dispose() {
     todoListState.dispose();
     showDoneTodosController.dispose();
-    // todoListStreamSb?.cancel();
+    todoListStreamSb?.cancel();
     super.dispose();
   }
 
@@ -100,18 +100,16 @@ class TodoListScreenWidgetModel
         done: !todo.done,
       ),
     );
-    await loadTodoList();
   }
 
   @override
-  Future<void> removeTodo(String todoId) async {
+  Future<void> deleteTodo(String todoId) async {
     await todoRepository.deleteTodo(todoId);
-    await loadTodoList();
   }
 
   @override
   void toTodoDetail(Todo? todo) {
-    router.navigate(TodoDetailRoute());
+    router.navigate(TodoDetailRoute(todo: todo));
   }
 
   @override

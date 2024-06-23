@@ -59,7 +59,7 @@ class SliverTodoList extends StatelessWidget {
           return TodoItem(
             todo: todo,
             borderRadius: _buildBorderRadius(index, todos.length),
-            removeTodo: wm.removeTodo,
+            removeTodo: wm.deleteTodo,
             doneTodo: wm.completeTodo,
             editTodo: (_) => wm.toTodoDetail(todo),
           );

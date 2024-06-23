@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:todo_list/app/theme/theme_color/theme_colors.dart';
 import 'package:todo_list/app/theme/theme_text/theme_text.dart';
 import 'package:todo_list/domain/model/todo.dart';
+import 'package:todo_list/extensions/date_format.dart';
 
 class TodoItem extends StatefulWidget {
   final Todo todo;
@@ -73,11 +74,9 @@ class _TodoItemState extends State<TodoItem> {
         return direction == DismissDirection.endToStart;
       },
       onUpdate: (details) {
-          setState(() {
-            _iconOffset = details.progress;
-            print(_iconOffset);
-          });
-
+        setState(() {
+          _iconOffset = details.progress;
+        });
       },
       onDismissed: (_) => widget.removeTodo(widget.todo.id),
       child: DecoratedBox(
@@ -101,15 +100,14 @@ class _TodoItemState extends State<TodoItem> {
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
             style: text.body.copyWith(
-              decoration:
-                  widget.todo.done ? TextDecoration.lineThrough : null,
+              decoration: widget.todo.done ? TextDecoration.lineThrough : null,
               decorationColor: colors.supportSeparator,
               color: widget.todo.done ? colors.supportSeparator : null,
             ),
           ),
           subtitle: deadline != null
               ? Text(
-                  DateFormat.yMd().format(deadline),
+                  deadline.fromDateToString(),
                 )
               : null,
           trailing: Icon(
