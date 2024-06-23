@@ -10,6 +10,8 @@ import 'package:todo_list/app/theme/theme_color/theme_colors.dart';
 import 'package:todo_list/domain/model/importance.dart';
 import 'package:todo_list/domain/model/todo.dart';
 import 'package:todo_list/extensions/date_format.dart';
+import 'package:todo_list/presentation/todo_detail/todo_detail_screen/components/date_switch.dart';
+import 'package:todo_list/presentation/todo_detail/todo_detail_screen/components/delete_element.dart';
 import 'todo_detail_screen_wm.dart';
 
 // TODO: cover with documentation
@@ -167,58 +169,19 @@ class TodoDetailScreenWidget
                   ValueListenableBuilder(
                     valueListenable: wm.deadlineEnableController,
                     builder: (BuildContext context, enabled, _) {
-                      // для старого дизайна Switch
-                      return Theme(
-                        data: ThemeData(useMaterial3: false),
-                        child: Switch(
-                          value: enabled,
-                          onChanged: (_) => wm.switchDeadline(),
-                          activeColor: wm.color.blue,
-                          trackColor: WidgetStateProperty.resolveWith(
-                            (states) {
-                              if (states.contains(WidgetState.selected)) {
-                                return wm.color.blue.withOpacity(0.3);
-                              }
-                              return wm.color.labelPrimary.withOpacity(0.06);
-                            },
-                          ),
-                        ),
+                      return DateSwitch(
+                        enabled: enabled,
+                        switchDeadline: wm.switchDeadline,
                       );
                     },
                   ),
                 ],
               ),
               const Divider(),
-              IgnorePointer(
-                ignoring: isNewTodo,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: InkWell(
-                    onTap: () => wm.deleteTodo(todo?.id),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(
-                          'assets/svg/trash.svg',
-                          colorFilter: ColorFilter.mode(
-                            isNewTodo
-                                ? wm.color.labelPrimary.withOpacity(0.15)
-                                : wm.color.red,
-                            BlendMode.modulate,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          'Удалить',
-                          style: wm.text.body.copyWith(
-                            color: isNewTodo
-                                ? wm.color.labelPrimary.withOpacity(0.15)
-                                : wm.color.red,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+              DeleteElement(
+                isNewTodo: isNewTodo,
+                id: todo?.id,
+                deleteTodo: wm.deleteTodo,
               ),
             ],
           ),

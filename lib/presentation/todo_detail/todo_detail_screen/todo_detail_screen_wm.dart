@@ -144,6 +144,7 @@ class TodoDetailScreenWidgetModel
   Future<void> deleteTodo(String? id) async {
     if (id == null) return;
     await todoRepository.deleteTodo(id);
+    close();
   }
 
   @override

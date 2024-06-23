@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo_list/domain/model/todo.dart';
-import 'package:todo_list/presentation/todo_list/todo_list_screen/components/complete_title.dart';
 import 'package:todo_list/presentation/todo_list/todo_list_screen/components/todo_item.dart';
 import 'package:todo_list/presentation/todo_list/todo_list_screen/todo_list_screen_wm.dart';
 
