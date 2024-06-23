@@ -62,13 +62,13 @@ class TodoListScreenWidgetModel
   @override
   Future<void> initWidgetModel() async {
     super.initWidgetModel();
-    todoListState.loading();
     todoListStreamSb = todoRepository.todoListStream.listen((_) {
       loadTodoList();
     });
   }
 
   Future<void> loadTodoList() async {
+    todoListState.loading();
     try {
       if (showDoneTodosController.value) {
         todoListState.content(await todoRepository.getTodoList());

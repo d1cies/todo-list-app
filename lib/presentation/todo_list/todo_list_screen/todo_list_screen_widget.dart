@@ -24,11 +24,14 @@ class TodoListScreenWidget
   Widget build(ITodoListScreenWidgetModel wm) {
     return Scaffold(
       body: CustomScrollView(
+        physics: const ClampingScrollPhysics(),
         slivers: [
           ValueListenableBuilder(
             valueListenable: wm.showDoneTodosController,
             builder: (BuildContext context, bool showDoneTodos, _) {
               return SliverPersistentHeader(
+                pinned: true,
+                floating: false,
                 delegate: SliverPersistentAppBar(
                   minHeight: 88,
                   expandedHeight: 164,
@@ -53,9 +56,17 @@ class TodoListScreenWidget
                   builder: (context, data) {
                     final todos = data ?? [];
                     if (todos.isEmpty) {
-                      return const SliverToBoxAdapter(
+                      return SliverToBoxAdapter(
                         child: Center(
-                          child: Text('Пусто'),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 70.0,
+                            ),
+                            child: Text(
+                              'Пусто',
+                              style: wm.text.title,
+                            ),
+                          ),
                         ),
                       );
                     }

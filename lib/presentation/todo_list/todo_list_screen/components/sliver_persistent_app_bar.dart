@@ -27,12 +27,10 @@ class SliverPersistentAppBar extends SliverPersistentHeaderDelegate {
       clipBehavior: Clip.none,
       fit: StackFit.passthrough,
       children: [
-        SafeArea(
-          child: Container(
-            height: expandedHeight,
-            width: double.infinity,
-            color: colors.backPrimary,
-          ),
+        Container(
+          height: expandedHeight,
+          width: double.infinity,
+          color: colors.backPrimary,
         ),
         Positioned(
           left: 60 - 44 * shift,
@@ -62,7 +60,7 @@ class SliverPersistentAppBar extends SliverPersistentHeaderDelegate {
           ),
         Positioned(
           right: 24 - 6 * shift,
-          top: 114 - 95 * shift,
+          top: 114 - 85 * shift,
           child: IconButton(
             icon: Icon(
               showDoneTodos ? Icons.visibility_off : Icons.visibility,
