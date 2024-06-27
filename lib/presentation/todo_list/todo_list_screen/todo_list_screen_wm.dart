@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:todo_list/domain/model/todo.dart';
 import 'package:todo_list/domain/repository/todo_repository.dart';
 import 'package:todo_list/internal/di/configure_dependencies.dart';
+import 'package:todo_list/presentation/todo_list/todo_list_screen/todo_list_screen_model.dart';
+import 'package:todo_list/presentation/todo_list/todo_list_screen/todo_list_screen_widget.dart';
 import 'package:todo_list/router/app_router.dart';
 import 'package:todo_list/util/wm_base.dart';
-import 'todo_list_screen_model.dart';
-import 'todo_list_screen_widget.dart';
 
 abstract interface class ITodoListScreenWidgetModel
     implements IWidgetModel, IThemeProvider {
@@ -81,8 +81,8 @@ class TodoListScreenWidgetModel
       } else {
         todoListState.content(await todoRepository.getNotDoneTodoList());
       }
-    } catch (e) {
-      todoListState.error();
+    } on Exception catch (e) {
+      todoListState.error(e);
     }
   }
 

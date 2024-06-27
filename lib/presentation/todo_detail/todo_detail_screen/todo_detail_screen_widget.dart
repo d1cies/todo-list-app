@@ -1,18 +1,12 @@
 import 'package:auto_route/annotations.dart';
 import 'package:elementary/elementary.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
-import 'package:todo_list/app/theme/theme_color/theme_colors.dart';
 import 'package:todo_list/domain/model/importance.dart';
 import 'package:todo_list/domain/model/todo.dart';
 import 'package:todo_list/extensions/date_format.dart';
 import 'package:todo_list/presentation/todo_detail/todo_detail_screen/components/date_switch.dart';
 import 'package:todo_list/presentation/todo_detail/todo_detail_screen/components/delete_element.dart';
-import 'todo_detail_screen_wm.dart';
+import 'package:todo_list/presentation/todo_detail/todo_detail_screen/todo_detail_screen_wm.dart';
 
 // TODO: cover with documentation
 /// Main widget for TodoDetailScreen module
@@ -29,7 +23,7 @@ class TodoDetailScreenWidget
 
   @override
   Widget build(ITodoDetailScreenWidgetModel wm) {
-    final bool isNewTodo = todo == null;
+    final isNewTodo = todo == null;
     return GestureDetector(
       onTap: wm.todoTextFocusNode.unfocus,
       child: Scaffold(
@@ -45,15 +39,14 @@ class TodoDetailScreenWidget
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 16.0),
+              padding: const EdgeInsets.only(right: 16),
               child: TextButton(
                 onPressed: wm.saveTodo,
                 child: Text(
                   'СОХРАНИТЬ',
                   style: wm.text.button.copyWith(
                     color: wm.color.blue,
-                  ),
-                ),
+                  ),)
               ),
             ),
           ],
@@ -61,14 +54,14 @@ class TodoDetailScreenWidget
         body: Center(
           child: ListView(
             padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 23.0,
+              horizontal: 16,
+              vertical: 23,
             ),
             children: [
               Material(
                 color: Colors.transparent,
-                borderRadius: BorderRadius.circular(8.0),
-                elevation: 2.0,
+                borderRadius: BorderRadius.circular(8),
+                elevation: 2,
                 child: TextField(
                   controller: wm.todoTextController,
                   focusNode: wm.todoTextFocusNode,
@@ -78,10 +71,10 @@ class TodoDetailScreenWidget
                     hintText: 'Что надо сделать...',
                     filled: true,
                     fillColor: wm.color.backSecondary,
-                    contentPadding: const EdgeInsets.all(16.0),
+                    contentPadding: const EdgeInsets.all(16),
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                   ),
                 ),
@@ -97,7 +90,6 @@ class TodoDetailScreenWidget
                 padding: EdgeInsets.zero,
                 alignedDropdown: true,
                 child: DropdownMenu(
-                  leadingIcon: null,
                   trailingIcon: const SizedBox.shrink(),
                   selectedTrailingIcon: const SizedBox.shrink(),
                   initialSelection: wm.selectedImportanceController.value,
@@ -151,10 +143,10 @@ class TodoDetailScreenWidget
                       ),
                       ValueListenableBuilder(
                         valueListenable: wm.deadlineController,
-                        builder: (BuildContext context, deadline, _) {
+                        builder: (context, deadline, _) {
                           if (deadline != null) {
                             return Padding(
-                              padding: const EdgeInsets.only(top: 4.0),
+                              padding: const EdgeInsets.only(top: 4),
                               child: Text(deadline.fromDateToString(),
                                   style: wm.text.subhead.copyWith(
                                     color: wm.color.blue,
@@ -168,7 +160,7 @@ class TodoDetailScreenWidget
                   ),
                   ValueListenableBuilder(
                     valueListenable: wm.deadlineEnableController,
-                    builder: (BuildContext context, enabled, _) {
+                    builder: (context, enabled, _) {
                       return DateSwitch(
                         enabled: enabled,
                         switchDeadline: wm.switchDeadline,

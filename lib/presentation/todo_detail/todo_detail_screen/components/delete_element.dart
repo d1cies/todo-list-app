@@ -11,8 +11,8 @@ class DeleteElement extends StatelessWidget {
   const DeleteElement({
     super.key,
     required this.isNewTodo,
-    this.id,
     required this.deleteTodo,
+    this.id,
   });
 
   @override
@@ -22,7 +22,7 @@ class DeleteElement extends StatelessWidget {
     return IgnorePointer(
       ignoring: isNewTodo,
       child: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
+        padding: const EdgeInsets.only(top: 20),
         child: InkWell(
           onTap: () => deleteTodo(id),
           child: Row(

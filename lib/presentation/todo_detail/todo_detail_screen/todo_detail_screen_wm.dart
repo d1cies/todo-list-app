@@ -7,8 +7,8 @@ import 'package:todo_list/domain/model/todo.dart';
 import 'package:todo_list/domain/repository/todo_repository.dart';
 import 'package:todo_list/internal/di/configure_dependencies.dart';
 import 'package:todo_list/util/wm_base.dart';
-import 'todo_detail_screen_model.dart';
-import 'todo_detail_screen_widget.dart';
+import 'package:todo_list/presentation/todo_detail/todo_detail_screen/todo_detail_screen_model.dart';
+import 'package:todo_list/presentation/todo_detail/todo_detail_screen/todo_detail_screen_widget.dart';
 
 abstract interface class ITodoDetailScreenWidgetModel
     implements IWidgetModel, IThemeProvider {
@@ -184,7 +184,7 @@ class TodoDetailScreenWidgetModel
       },
     );
     if (deadlineController.value == null) {
-      switchDeadline(val: false);
+      await switchDeadline(val: false);
     }
   }
 }

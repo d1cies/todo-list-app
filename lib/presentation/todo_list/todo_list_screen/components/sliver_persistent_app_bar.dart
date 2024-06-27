@@ -20,7 +20,7 @@ class SliverPersistentAppBar extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    double shift = shrinkOffset / expandedHeight;
+    final shift = shrinkOffset / expandedHeight;
     final colors = Theme.of(context).extension<ThemeColors>()!;
     final text = Theme.of(context).extension<ThemeText>()!;
     return Stack(

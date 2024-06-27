@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 extension DateFormatter on DateTime {
   String fromDateToString() {
     initializeDateFormatting();
-    final DateFormat formatter = DateFormat.yMMMMd('ru_RU');
+    final formatter = DateFormat.yMMMMd('ru_RU');
     return formatter.format(this).replaceAll('г.', '');
   }
 }

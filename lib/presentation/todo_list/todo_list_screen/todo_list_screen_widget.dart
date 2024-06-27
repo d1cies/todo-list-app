@@ -2,11 +2,10 @@ import 'package:auto_route/annotations.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:todo_list/presentation/common_components/loading_indicator.dart';
 import 'package:todo_list/presentation/todo_list/todo_list_screen/components/sliver_persistent_app_bar.dart';
 import 'package:todo_list/presentation/todo_list/todo_list_screen/components/sliver_todo_list.dart';
-import 'todo_list_screen_wm.dart';
+import 'package:todo_list/presentation/todo_list/todo_list_screen/todo_list_screen_wm.dart';
 
 // TODO: cover with documentation
 /// Main widget for TodoListScreen module
@@ -26,13 +25,12 @@ class TodoListScreenWidget
         slivers: [
           ValueListenableBuilder(
             valueListenable: wm.showDoneTodosController,
-            builder: (BuildContext context, bool showDoneTodos, _) {
+            builder: (context, showDoneTodos, _) {
               return ValueListenableBuilder(
                 valueListenable: wm.doneTodoCountController,
                 builder: (context, doneTodosCount, _) {
                   return SliverPersistentHeader(
                     pinned: true,
-                    floating: false,
                     delegate: SliverPersistentAppBar(
                       minHeight: 88,
                       expandedHeight: 164,
@@ -47,15 +45,15 @@ class TodoListScreenWidget
           ),
           SliverPadding(
             padding: const EdgeInsets.symmetric(
-              vertical: 8.0,
+              vertical: 8,
             ),
             sliver: ValueListenableBuilder(
               valueListenable: wm.showDoneTodosController,
               builder: (context, showDoneTodos, _) {
                 return EntityStateNotifierBuilder(
                   listenableEntityState: wm.todoListState,
-                  loadingBuilder: ((_, __) =>
-                      const SliverToBoxAdapter(child: LoadingIndicator())),
+                  loadingBuilder: (_, __) =>
+                      const SliverToBoxAdapter(child: LoadingIndicator()),
                   builder: (context, data) {
                     final todos = data ?? [];
                     if (todos.isEmpty) {
@@ -63,7 +61,7 @@ class TodoListScreenWidget
                         child: Center(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                              vertical: 70.0,
+                              vertical: 70,
                             ),
                             child: Text(
                               'Пусто',

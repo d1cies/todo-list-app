@@ -1,4 +1,4 @@
-import 'app_router_export.dart';
+import 'package:todo_list/router/app_router_export.dart';
 
 part 'app_router.gr.dart';
 

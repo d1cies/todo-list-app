@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:todo_list/app/theme/theme_color/theme_colors.dart';
 import 'package:todo_list/app/theme/theme_text/theme_text.dart';
 import 'package:todo_list/domain/model/importance.dart';
@@ -27,7 +26,7 @@ class TodoItem extends StatefulWidget {
 }
 
 class _TodoItemState extends State<TodoItem> {
-  double _iconOffset = 0.0;
+  double _iconOffset = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +67,7 @@ class _TodoItemState extends State<TodoItem> {
           ],
         ),
       ),
-      confirmDismiss: (DismissDirection direction) async {
+      confirmDismiss: (direction) async {
         if (direction == DismissDirection.startToEnd) {
           widget.doneTodo(widget.todo);
         }
@@ -89,8 +88,8 @@ class _TodoItemState extends State<TodoItem> {
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(
-              vertical: 14.0,
-              horizontal: 16.0,
+              vertical: 14,
+              horizontal: 16,
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,13 +105,13 @@ class _TodoItemState extends State<TodoItem> {
                         if (!states.contains(WidgetState.selected) &&
                             widget.todo.importance == Importance.high) {
                           return BorderSide(
-                            width: 2.0,
+                            width: 2,
                             color: colors.red,
                           );
                         }
                         if (!states.contains(WidgetState.selected)) {
                           return BorderSide(
-                            width: 2.0,
+                            width: 2,
                             color: colors.supportSeparator,
                           );
                         }
@@ -164,7 +163,7 @@ class _TodoItemState extends State<TodoItem> {
                     ),
                     if (deadline != null)
                       Padding(
-                        padding: const EdgeInsets.only(top: 4.0),
+                        padding: const EdgeInsets.only(top: 4),
                         child: Text(
                           deadline.fromDateToString(),
                         ),

@@ -28,12 +28,13 @@ class LocalTodoRepository implements TodoRepository {
       final prefs = await SharedPreferences.getInstance();
       final rawData = prefs.getString(key);
       if (rawData == null) return;
-      final jsonList = await compute(jsonDecode, rawData) as List<dynamic>;
-      final todos = jsonList.map((json) => Todo.fromJson(json)).toList();
+      final jsonList =
+          await compute(jsonDecode, rawData) as List<Map<String, dynamic>>;
+      final todos = jsonList.map(Todo.fromJson).toList();
       _todoList = todos;
       _todoListStreamController.add(_todoList);
       logger.i('Todos loaded');
-    } catch (e, s) {
+    } on Exception catch (e, s) {
       logger.f('TodoList load error', error: e, stackTrace: s);
     }
   }
@@ -56,9 +57,9 @@ class LocalTodoRepository implements TodoRepository {
         _todoList.insert(0, todo);
       }
       _todoListStreamController.add(_todoList);
-      prefs.setString(key, json.encode(_todoList));
+      await prefs.setString(key, json.encode(_todoList));
       logger.i('Todo saved');
-    } catch (e, s) {
+    } on Exception catch (e, s) {
       logger.f('Error saving the todo', error: e, stackTrace: s);
       rethrow;
     }
@@ -75,9 +76,9 @@ class LocalTodoRepository implements TodoRepository {
       }
       _todoList.removeAt(todoIndex);
       _todoListStreamController.add(_todoList);
-      prefs.setString(key, json.encode(_todoList));
+      await prefs.setString(key, json.encode(_todoList));
       logger.i('Todo deleted');
-    } catch (e, s) {
+    } on Exception catch (e, s) {
       logger.f('Error deleting the todo', error: e, stackTrace: s);
       rethrow;
     }
