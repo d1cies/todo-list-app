@@ -1,16 +1,38 @@
-# todo_list
+# Yandex Todo Application
 
-Todo list application
+## Описание проекта
+Мобильное приложение для хранения и отслеживания выполнения задач.
 
-## Getting Started
+### Реализованные фичи
+- Создание задач с опциональным указанием их важности и дедлайна
+- Редактарование задач
+- Удаление задач
+- Возможность отметить задачу выполненной
+- Хранение задач локально на устройстве
 
-This project is a starting point for a Flutter application.
+[*****Apk мобильного приложения*****](app-release.apk)
 
-A few resources to get you started if this is your first Flutter project:
+### Скриншоты из приложения
+- Иконка приложения
+  
+![GitHub Image](/screenshots/app_icon.png)
+- Экран, когда задач нет
+  
+![GitHub Image](/screenshots/empty_todo_list.png)
+- Экран с созданием задачи
+  
+![GitHub Image](/screenshots/create_todo.png)
+- Данные для новой задачи заполнены
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+![GitHub Image](/screenshots/filled_todo.png)
+- Список задач к выполнению
+  
+![GitHub Image](/screenshots/todo_list.png)
+- Список всех задач
+  
+![GitHub Image](/screenshots/all_todos.png)
+- AppBar при полном скролле
+  
+![GitHub Image](/screenshots/app_bar.png)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
