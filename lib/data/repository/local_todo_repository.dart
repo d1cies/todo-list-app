@@ -28,9 +28,10 @@ class LocalTodoRepository implements TodoRepository {
       final prefs = await SharedPreferences.getInstance();
       final rawData = prefs.getString(key);
       if (rawData == null) return;
-      final jsonList =
-          await compute(jsonDecode, rawData) as List<Map<String, dynamic>>;
-      final todos = jsonList.map(Todo.fromJson).toList();
+      final jsonList = await compute(jsonDecode, rawData) as List<dynamic>;
+      final todos = jsonList
+          .map<Todo>((json) => Todo.fromJson(json as Map<String, dynamic>))
+          .toList();
       _todoList = todos;
       _todoListStreamController.add(_todoList);
       logger.i('Todos loaded');
