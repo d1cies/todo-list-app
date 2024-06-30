@@ -147,7 +147,7 @@ class TodoDetailScreenWidget
                           if (deadline != null) {
                             return Padding(
                               padding: const EdgeInsets.only(top: 4),
-                              child: Text(deadline.fromDateToString(),
+                              child: Text(deadline.fromDateToString(context),
                                   style: wm.text.subhead.copyWith(
                                     color: wm.color.blue,
                                   )),

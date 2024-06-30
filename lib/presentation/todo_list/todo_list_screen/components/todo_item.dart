@@ -165,7 +165,10 @@ class _TodoItemState extends State<TodoItem> {
                       Padding(
                         padding: const EdgeInsets.only(top: 4),
                         child: Text(
-                          deadline.fromDateToString(),
+                          deadline.fromDateToString(context),
+                          style: text.subhead.copyWith(
+                            color: colors.supportSeparator,
+                          ),
                         ),
                       ),
                   ],
