@@ -4,8 +4,9 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_list/domain/model/importance.dart';
 import 'package:todo_list/domain/model/todo.dart';
-import 'package:todo_list/domain/repository/todo_repository.dart';
+import 'package:todo_list/domain/use_case/todo_use_case.dart';
 import 'package:todo_list/internal/di/configure_dependencies.dart';
+import 'package:todo_list/util/device_info.dart';
 import 'package:todo_list/util/wm_base.dart';
 import 'package:todo_list/presentation/todo_detail/todo_detail_screen/todo_detail_screen_model.dart';
 import 'package:todo_list/presentation/todo_detail/todo_detail_screen/todo_detail_screen_widget.dart';
@@ -41,7 +42,7 @@ TodoDetailScreenWidgetModel defaultTodoDetailScreenWidgetModelFactory(
     BuildContext context) {
   return TodoDetailScreenWidgetModel(
     TodoDetailScreenModel(),
-    todoRepository: getIt.get<TodoRepository>(),
+    todoUseCase: getIt.get<ITodoUseCase>(),
   );
 }
 
@@ -53,27 +54,23 @@ class TodoDetailScreenWidgetModel
     implements ITodoDetailScreenWidgetModel {
   TodoDetailScreenWidgetModel(
     super.model, {
-    required this.todoRepository,
+    required this.todoUseCase,
   });
 
-  final TodoRepository todoRepository;
+  final ITodoUseCase todoUseCase;
 
   @override
-  ValueNotifier<Importance> selectedImportanceController =
-      ValueNotifier(Importance.no);
+  final ValueNotifier<Importance> selectedImportanceController =
+      ValueNotifier(Importance.basic);
 
   @override
-  ValueNotifier<bool> deadlineEnableController = ValueNotifier(false);
+  final ValueNotifier<bool> deadlineEnableController = ValueNotifier(false);
 
   @override
-  ValueNotifier<DateTime?> deadlineController = ValueNotifier(null);
+  final ValueNotifier<DateTime?> deadlineController = ValueNotifier(null);
 
   @override
-  Map<Importance, String> importanceMap = {
-    Importance.no: 'Нет',
-    Importance.low: 'Низкий',
-    Importance.high: '!! Высокий',
-  };
+  late final Map<Importance, String> importanceMap;
 
   @override
   final TextEditingController todoTextController = TextEditingController();
@@ -84,6 +81,11 @@ class TodoDetailScreenWidgetModel
   @override
   void initWidgetModel() {
     super.initWidgetModel();
+    importanceMap = {
+      Importance.basic: localizations.no,
+      Importance.low: localizations.low,
+      Importance.important: '!! ${localizations.high}',
+    };
     initTodo();
   }
 
@@ -99,7 +101,7 @@ class TodoDetailScreenWidgetModel
     if (todo != null) {
       todoTextController.text = widget.todo?.text ?? '';
       selectedImportanceController.value =
-          widget.todo?.importance ?? Importance.no;
+          widget.todo?.importance ?? Importance.basic;
       if (todo.deadline != null) {
         deadlineEnableController.value = true;
         deadlineController.value = widget.todo?.deadline;
@@ -120,15 +122,17 @@ class TodoDetailScreenWidgetModel
   @override
   Future<void> saveTodo() async {
     if (widget.todo == null) {
+      final deviceId = await getDeviceId();
       final todo = Todo.create(
         text: todoTextController.text,
         importance: selectedImportanceController.value,
         done: widget.todo?.done ?? false,
         deadline: deadlineController.value,
+        lastUpdatedBy: deviceId,
       );
-      await todoRepository.saveTodo(todo);
+      await todoUseCase.createTodo(todo);
     } else {
-      await todoRepository.saveTodo(
+      await todoUseCase.updateTodo(
         widget.todo!.copyWith(
           text: todoTextController.text,
           importance: selectedImportanceController.value,
@@ -143,7 +147,7 @@ class TodoDetailScreenWidgetModel
   @override
   Future<void> deleteTodo(String? id) async {
     if (id == null) return;
-    await todoRepository.deleteTodo(id);
+    await todoUseCase.deleteTodo(id);
     close();
   }
 
