@@ -64,7 +64,7 @@ class TodoListScreenWidget
                               vertical: 70,
                             ),
                             child: Text(
-                              'Пусто',
+                              wm.localizations.empty,
                               style: wm.text.title,
                             ),
                           ),

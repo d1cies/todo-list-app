@@ -43,7 +43,7 @@ class TodoDetailScreenWidget
               child: TextButton(
                 onPressed: wm.saveTodo,
                 child: Text(
-                  'СОХРАНИТЬ',
+                  wm.localizations.save,
                   style: wm.text.button.copyWith(
                     color: wm.color.blue,
                   ),)
@@ -68,7 +68,7 @@ class TodoDetailScreenWidget
                   maxLines: null,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
-                    hintText: 'Что надо сделать...',
+                    hintText: wm.localizations.hintTodoTextField,
                     filled: true,
                     fillColor: wm.color.backSecondary,
                     contentPadding: const EdgeInsets.all(16),
@@ -81,7 +81,7 @@ class TodoDetailScreenWidget
               ),
               const SizedBox(height: 28),
               Text(
-                'Важность',
+                wm.localizations.importance,
                 style: wm.text.body.copyWith(
                   color: wm.color.labelPrimary,
                 ),
@@ -109,11 +109,11 @@ class TodoDetailScreenWidget
                     backgroundColor: WidgetStateProperty.all(wm.color.white),
                   ),
                   onSelected: (cur) =>
-                      wm.selectImportance(cur ?? Importance.no),
+                      wm.selectImportance(cur ?? Importance.basic),
                   dropdownMenuEntries: wm.importanceMap.entries
                       .map<DropdownMenuEntry<Importance>>(
                     (importance) {
-                      final color = importance.key == Importance.high
+                      final color = importance.key == Importance.important
                           ? wm.color.red
                           : wm.color.labelPrimary;
                       return DropdownMenuEntry(
@@ -136,7 +136,7 @@ class TodoDetailScreenWidget
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Сделать до',
+                        wm.localizations.doneBy,
                         style: wm.text.body.copyWith(
                           color: wm.color.labelPrimary,
                         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/app/theme/theme_color/theme_colors.dart';
 import 'package:todo_list/app/theme/theme_text/theme_text.dart';
+import 'package:todo_list/generated/app_localizations.dart';
 
 class SliverPersistentAppBar extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
@@ -23,6 +24,7 @@ class SliverPersistentAppBar extends SliverPersistentHeaderDelegate {
     final shift = shrinkOffset / expandedHeight;
     final colors = Theme.of(context).extension<ThemeColors>()!;
     final text = Theme.of(context).extension<ThemeText>()!;
+    final localizations = AppLocalizations.of(context);
     return Stack(
       clipBehavior: Clip.none,
       fit: StackFit.passthrough,
@@ -36,7 +38,7 @@ class SliverPersistentAppBar extends SliverPersistentHeaderDelegate {
           left: 60 - 44 * shift,
           top: 82 - 50 * shift,
           child: Text(
-            'Мои дела',
+            localizations.myTodosTitle,
             style: text.largeTitle.copyWith(
               color: colors.labelPrimary,
               fontSize: 40 - 8 * shift,
@@ -51,7 +53,7 @@ class SliverPersistentAppBar extends SliverPersistentHeaderDelegate {
             child: Opacity(
               opacity: (1 - shift + 0.5).clamp(0, 1),
               child: Text(
-                'Выполнено - $doneTodos',
+                '${localizations.doneSubtitle} - $doneTodos',
                 style: text.body.copyWith(
                   color: colors.supportSeparator,
                 ),
