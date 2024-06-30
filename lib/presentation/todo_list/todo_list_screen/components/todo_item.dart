@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/app/theme/theme_color/theme_colors.dart';
-import 'package:todo_list/app/theme/theme_text/theme_text.dart';
-import 'package:todo_list/domain/model/importance.dart';
 import 'package:todo_list/domain/model/todo.dart';
-import 'package:todo_list/extensions/date_format.dart';
+import 'package:todo_list/presentation/todo_list/todo_list_screen/components/item_checkbox.dart';
+import 'package:todo_list/presentation/todo_list/todo_list_screen/components/item_text.dart';
 
 class TodoItem extends StatefulWidget {
   final Todo todo;
@@ -31,8 +30,6 @@ class _TodoItemState extends State<TodoItem> {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<ThemeColors>()!;
-    final text = Theme.of(context).extension<ThemeText>()!;
-    final deadline = widget.todo.deadline;
     return Dismissible(
       key: ValueKey<Todo>(widget.todo),
       background: ColoredBox(
@@ -94,85 +91,12 @@ class _TodoItemState extends State<TodoItem> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: Checkbox(
-                    value: widget.todo.done,
-                    onChanged: (_) => widget.doneTodo(widget.todo),
-                    side: WidgetStateBorderSide.resolveWith(
-                      (states) {
-                        if (!states.contains(WidgetState.selected) &&
-                            widget.todo.importance == Importance.important) {
-                          return BorderSide(
-                            width: 2,
-                            color: colors.red,
-                          );
-                        }
-                        if (!states.contains(WidgetState.selected)) {
-                          return BorderSide(
-                            width: 2,
-                            color: colors.supportSeparator,
-                          );
-                        }
-                        return null;
-                      },
-                    ),
-                    fillColor: WidgetStateProperty.resolveWith(
-                      (states) {
-                        if (!states.contains(WidgetState.selected) &&
-                            widget.todo.importance == Importance.important) {
-                          return colors.red.withOpacity(0.16);
-                        }
-                        if (states.contains(WidgetState.selected)) {
-                          return colors.green;
-                        }
-                        return Colors.transparent;
-                      },
-                    ),
-                  ),
+                ItemCheckbox(
+                  todo: widget.todo,
+                  doneTodo: widget.doneTodo,
                 ),
                 const SizedBox(width: 15),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text.rich(
-                      TextSpan(
-                          text: widget.todo.importance == Importance.important
-                              ? '!! '
-                              : '',
-                          style: text.body.copyWith(
-                            color: colors.red,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: widget.todo.text,
-                              style: text.body.copyWith(
-                                decoration: widget.todo.done
-                                    ? TextDecoration.lineThrough
-                                    : null,
-                                decorationColor: colors.supportSeparator,
-                                color: widget.todo.done
-                                    ? colors.supportSeparator
-                                    : null,
-                              ),
-                            ),
-                          ]),
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    if (deadline != null)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4),
-                        child: Text(
-                          deadline.fromDateToString(context),
-                          style: text.subhead.copyWith(
-                            color: colors.supportSeparator,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
+                ItemText(todo: widget.todo),
                 const Spacer(),
                 Icon(
                   Icons.info_outline,

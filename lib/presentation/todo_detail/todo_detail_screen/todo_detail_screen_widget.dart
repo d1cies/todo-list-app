@@ -1,11 +1,12 @@
 import 'package:auto_route/annotations.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_list/domain/model/importance.dart';
 import 'package:todo_list/domain/model/todo.dart';
 import 'package:todo_list/extensions/date_format.dart';
 import 'package:todo_list/presentation/todo_detail/todo_detail_screen/components/date_switch.dart';
 import 'package:todo_list/presentation/todo_detail/todo_detail_screen/components/delete_element.dart';
+import 'package:todo_list/presentation/todo_detail/todo_detail_screen/components/select_importance.dart';
+import 'package:todo_list/presentation/todo_detail/todo_detail_screen/components/todo_text_field.dart';
 import 'package:todo_list/presentation/todo_detail/todo_detail_screen/todo_detail_screen_wm.dart';
 
 // TODO: cover with documentation
@@ -41,13 +42,13 @@ class TodoDetailScreenWidget
             Padding(
               padding: const EdgeInsets.only(right: 16),
               child: TextButton(
-                onPressed: wm.saveTodo,
-                child: Text(
-                  wm.localizations.save,
-                  style: wm.text.button.copyWith(
-                    color: wm.color.blue,
-                  ),)
-              ),
+                  onPressed: wm.saveTodo,
+                  child: Text(
+                    wm.localizations.save,
+                    style: wm.text.button.copyWith(
+                      color: wm.color.blue,
+                    ),
+                  )),
             ),
           ],
         ),
@@ -58,26 +59,9 @@ class TodoDetailScreenWidget
               vertical: 23,
             ),
             children: [
-              Material(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.circular(8),
-                elevation: 2,
-                child: TextField(
-                  controller: wm.todoTextController,
-                  focusNode: wm.todoTextFocusNode,
-                  maxLines: null,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    hintText: wm.localizations.hintTodoTextField,
-                    filled: true,
-                    fillColor: wm.color.backSecondary,
-                    contentPadding: const EdgeInsets.all(16),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
+              TodoTextField(
+                textController: wm.todoTextController,
+                textFocusNode: wm.todoTextFocusNode,
               ),
               const SizedBox(height: 28),
               Text(
@@ -86,47 +70,7 @@ class TodoDetailScreenWidget
                   color: wm.color.labelPrimary,
                 ),
               ),
-              ButtonTheme(
-                padding: EdgeInsets.zero,
-                alignedDropdown: true,
-                child: DropdownMenu(
-                  trailingIcon: const SizedBox.shrink(),
-                  selectedTrailingIcon: const SizedBox.shrink(),
-                  initialSelection: wm.selectedImportanceController.value,
-                  textStyle: wm.text.subhead
-                      .copyWith(color: wm.color.labelPrimary.withOpacity(0.3)),
-                  inputDecorationTheme: const InputDecorationTheme(
-                    activeIndicatorBorder: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderRadius: BorderRadius.zero,
-                      borderSide: BorderSide(color: Colors.transparent),
-                    ),
-                  ),
-                  menuStyle: MenuStyle(
-                    padding: WidgetStateProperty.all(EdgeInsets.zero),
-                    backgroundColor: WidgetStateProperty.all(wm.color.white),
-                  ),
-                  onSelected: (cur) =>
-                      wm.selectImportance(cur ?? Importance.basic),
-                  dropdownMenuEntries: wm.importanceMap.entries
-                      .map<DropdownMenuEntry<Importance>>(
-                    (importance) {
-                      final color = importance.key == Importance.important
-                          ? wm.color.red
-                          : wm.color.labelPrimary;
-                      return DropdownMenuEntry(
-                        value: importance.key,
-                        label: importance.value,
-                        style: ButtonStyle(
-                          foregroundColor: WidgetStateProperty.all(color),
-                        ),
-                      );
-                    },
-                  ).toList(),
-                ),
-              ),
+              SelectImportance(wm: wm),
               const Divider(height: 0),
               const SizedBox(height: 16),
               Row(
