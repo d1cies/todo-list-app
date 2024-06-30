@@ -14,9 +14,7 @@ abstract class ITodoUseCase implements LifeCycleComponent {
 
   Future<void> getTodoList();
 
-  Future<void> allCurrentTodoList();
-
-  Future<void> getNotDoneTodoList();
+  List<Todo> get allCurrentTodoList;
 
   Future<void> getTodo(String id);
 
@@ -73,15 +71,7 @@ class TodoUseCase implements ITodoUseCase {
   }
 
   @override
-  Future<void> allCurrentTodoList() async {
-    _todoListStreamController.add(_todoList);
-  }
-
-  @override
-  Future<void> getNotDoneTodoList() async {
-    _todoListStreamController
-        .add(_todoList.where((todo) => !todo.done).toList());
-  }
+  List<Todo> get allCurrentTodoList => _todoListStreamController.value;
 
   @override
   Future<void> createTodo(Todo todo) async {

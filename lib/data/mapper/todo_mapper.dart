@@ -23,6 +23,7 @@ TodoRequest mapTodoToRequest(Todo todo) {
       id: todo.id,
       text: todo.text,
       importance: todo.importance,
+      deadline: todo.deadline?.millisecondsSinceEpoch,
       done: todo.done,
       createdAt: todo.createdAt,
       changedAt: todo.changedAt,

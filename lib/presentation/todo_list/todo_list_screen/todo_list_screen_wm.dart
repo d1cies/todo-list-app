@@ -69,7 +69,7 @@ class TodoListScreenWidgetModel
     super.initWidgetModel();
     loadTodoList();
     todoListStreamSb = todoUseCase.todoListStream.listen((todoList) {
-      todoListState.content(todoList);
+      currentTodoList(todoList);
       doneTodoCountController.value = doneTodosCount;
     });
   }
@@ -78,12 +78,17 @@ class TodoListScreenWidgetModel
     todoListState.loading();
     try {
       await todoUseCase.getTodoList();
-      if (!showDoneTodosController.value) {
-        await todoUseCase.getNotDoneTodoList();
-      }
     } on Exception catch (e) {
       todoListState.error(e);
     }
+  }
+
+  void currentTodoList(List<Todo> list) {
+    if (showDoneTodosController.value) {
+       todoListState.content(list);
+       return;
+    }
+    todoListState.content(list.where((todo) => !todo.done).toList());
   }
 
   @override
@@ -124,10 +129,6 @@ class TodoListScreenWidgetModel
   @override
   Future<void> changeDoneTodosVisibility() async {
     showDoneTodosController.value = !showDoneTodosController.value;
-    if (showDoneTodosController.value) {
-      todoUseCase.allCurrentTodoList();
-    } else {
-      todoUseCase.getNotDoneTodoList();
-    }
+    currentTodoList(todoUseCase.allCurrentTodoList);
   }
 }
