@@ -1,0 +1,14 @@
+{
+  "@@locale": "en",
+   "myTodosTitle": "My Todos",
+   "doneSubtitle" : "Done",
+   "empty": "Empty",
+   "hintTodoTextField" : "What needs to be done...",
+   "importance" : "Importance",
+   "no" : "No",
+   "low" : "Low",
+   "high" : "High",
+   "delete" : "Delete",
+   "doneBy" : "Done by",
+   "save" : "SAVE"
+}

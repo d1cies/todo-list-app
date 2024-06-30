@@ -103,7 +103,7 @@ class _TodoItemState extends State<TodoItem> {
                     side: WidgetStateBorderSide.resolveWith(
                       (states) {
                         if (!states.contains(WidgetState.selected) &&
-                            widget.todo.importance == Importance.high) {
+                            widget.todo.importance == Importance.important) {
                           return BorderSide(
                             width: 2,
                             color: colors.red,
@@ -121,7 +121,7 @@ class _TodoItemState extends State<TodoItem> {
                     fillColor: WidgetStateProperty.resolveWith(
                       (states) {
                         if (!states.contains(WidgetState.selected) &&
-                            widget.todo.importance == Importance.high) {
+                            widget.todo.importance == Importance.important) {
                           return colors.red.withOpacity(0.16);
                         }
                         if (states.contains(WidgetState.selected)) {
@@ -138,7 +138,7 @@ class _TodoItemState extends State<TodoItem> {
                   children: [
                     Text.rich(
                       TextSpan(
-                          text: widget.todo.importance == Importance.high
+                          text: widget.todo.importance == Importance.important
                               ? '!! '
                               : '',
                           style: text.body.copyWith(
@@ -182,6 +182,4 @@ class _TodoItemState extends State<TodoItem> {
       ),
     );
   }
-
-// AlignmentGeometry _getActualAligment(double offset) {}
 }
