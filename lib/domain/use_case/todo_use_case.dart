@@ -84,8 +84,7 @@ class TodoUseCase implements ITodoUseCase {
   @override
   Future<void> updateTodo(Todo todo) async {
     final todoIndex = _todoList.indexWhere((t) => t.id == todo.id);
-    Todo oldTodo = todo;
-    ;
+    var oldTodo = todo;
     if (todoIndex != -1) {
       oldTodo = _todoList[todoIndex];
       _todoList[todoIndex] = todo;
