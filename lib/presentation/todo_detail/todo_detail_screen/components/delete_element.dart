@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:todo_list/app/theme/theme_color/theme_colors.dart';
 import 'package:todo_list/app/theme/theme_text/theme_text.dart';
+import 'package:todo_list/generated/app_localizations.dart';
 
 class DeleteElement extends StatelessWidget {
   final bool isNewTodo;
@@ -11,18 +12,19 @@ class DeleteElement extends StatelessWidget {
   const DeleteElement({
     super.key,
     required this.isNewTodo,
-    this.id,
     required this.deleteTodo,
+    this.id,
   });
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<ThemeColors>()!;
     final text = Theme.of(context).extension<ThemeText>()!;
+    final localizations = AppLocalizations.of(context);
     return IgnorePointer(
       ignoring: isNewTodo,
       child: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
+        padding: const EdgeInsets.only(top: 20),
         child: InkWell(
           onTap: () => deleteTodo(id),
           child: Row(
@@ -38,7 +40,7 @@ class DeleteElement extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               Text(
-                'Удалить',
+                localizations.delete,
                 style: text.body.copyWith(
                   color: isNewTodo
                       ? colors.labelPrimary.withOpacity(0.15)

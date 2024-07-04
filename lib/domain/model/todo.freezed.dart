@@ -23,8 +23,12 @@ mixin _$Todo {
   String get id => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   bool get done => throw _privateConstructorUsedError;
+  Importance get importance => throw _privateConstructorUsedError;
+  int get createdAt => throw _privateConstructorUsedError;
+  int get changedAt => throw _privateConstructorUsedError;
+  String get lastUpdatedBy => throw _privateConstructorUsedError;
   DateTime? get deadline => throw _privateConstructorUsedError;
-  Importance? get importance => throw _privateConstructorUsedError;
+  String? get color => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -40,8 +44,12 @@ abstract class $TodoCopyWith<$Res> {
       {String id,
       String text,
       bool done,
+      Importance importance,
+      int createdAt,
+      int changedAt,
+      String lastUpdatedBy,
       DateTime? deadline,
-      Importance? importance});
+      String? color});
 }
 
 /// @nodoc
@@ -60,8 +68,12 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
     Object? id = null,
     Object? text = null,
     Object? done = null,
+    Object? importance = null,
+    Object? createdAt = null,
+    Object? changedAt = null,
+    Object? lastUpdatedBy = null,
     Object? deadline = freezed,
-    Object? importance = freezed,
+    Object? color = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -76,14 +88,30 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
           ? _value.done
           : done // ignore: cast_nullable_to_non_nullable
               as bool,
+      importance: null == importance
+          ? _value.importance
+          : importance // ignore: cast_nullable_to_non_nullable
+              as Importance,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as int,
+      changedAt: null == changedAt
+          ? _value.changedAt
+          : changedAt // ignore: cast_nullable_to_non_nullable
+              as int,
+      lastUpdatedBy: null == lastUpdatedBy
+          ? _value.lastUpdatedBy
+          : lastUpdatedBy // ignore: cast_nullable_to_non_nullable
+              as String,
       deadline: freezed == deadline
           ? _value.deadline
           : deadline // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      importance: freezed == importance
-          ? _value.importance
-          : importance // ignore: cast_nullable_to_non_nullable
-              as Importance?,
+      color: freezed == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -99,8 +127,12 @@ abstract class _$$TodoImplCopyWith<$Res> implements $TodoCopyWith<$Res> {
       {String id,
       String text,
       bool done,
+      Importance importance,
+      int createdAt,
+      int changedAt,
+      String lastUpdatedBy,
       DateTime? deadline,
-      Importance? importance});
+      String? color});
 }
 
 /// @nodoc
@@ -116,8 +148,12 @@ class __$$TodoImplCopyWithImpl<$Res>
     Object? id = null,
     Object? text = null,
     Object? done = null,
+    Object? importance = null,
+    Object? createdAt = null,
+    Object? changedAt = null,
+    Object? lastUpdatedBy = null,
     Object? deadline = freezed,
-    Object? importance = freezed,
+    Object? color = freezed,
   }) {
     return _then(_$TodoImpl(
       id: null == id
@@ -132,14 +168,30 @@ class __$$TodoImplCopyWithImpl<$Res>
           ? _value.done
           : done // ignore: cast_nullable_to_non_nullable
               as bool,
+      importance: null == importance
+          ? _value.importance
+          : importance // ignore: cast_nullable_to_non_nullable
+              as Importance,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as int,
+      changedAt: null == changedAt
+          ? _value.changedAt
+          : changedAt // ignore: cast_nullable_to_non_nullable
+              as int,
+      lastUpdatedBy: null == lastUpdatedBy
+          ? _value.lastUpdatedBy
+          : lastUpdatedBy // ignore: cast_nullable_to_non_nullable
+              as String,
       deadline: freezed == deadline
           ? _value.deadline
           : deadline // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      importance: freezed == importance
-          ? _value.importance
-          : importance // ignore: cast_nullable_to_non_nullable
-              as Importance?,
+      color: freezed == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -151,8 +203,12 @@ class _$TodoImpl implements _Todo {
       {required this.id,
       required this.text,
       required this.done,
+      required this.importance,
+      required this.createdAt,
+      required this.changedAt,
+      required this.lastUpdatedBy,
       this.deadline,
-      this.importance});
+      this.color});
 
   factory _$TodoImpl.fromJson(Map<String, dynamic> json) =>
       _$$TodoImplFromJson(json);
@@ -164,13 +220,21 @@ class _$TodoImpl implements _Todo {
   @override
   final bool done;
   @override
+  final Importance importance;
+  @override
+  final int createdAt;
+  @override
+  final int changedAt;
+  @override
+  final String lastUpdatedBy;
+  @override
   final DateTime? deadline;
   @override
-  final Importance? importance;
+  final String? color;
 
   @override
   String toString() {
-    return 'Todo(id: $id, text: $text, done: $done, deadline: $deadline, importance: $importance)';
+    return 'Todo(id: $id, text: $text, done: $done, importance: $importance, createdAt: $createdAt, changedAt: $changedAt, lastUpdatedBy: $lastUpdatedBy, deadline: $deadline, color: $color)';
   }
 
   @override
@@ -181,16 +245,23 @@ class _$TodoImpl implements _Todo {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.done, done) || other.done == done) &&
+            (identical(other.importance, importance) ||
+                other.importance == importance) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.changedAt, changedAt) ||
+                other.changedAt == changedAt) &&
+            (identical(other.lastUpdatedBy, lastUpdatedBy) ||
+                other.lastUpdatedBy == lastUpdatedBy) &&
             (identical(other.deadline, deadline) ||
                 other.deadline == deadline) &&
-            (identical(other.importance, importance) ||
-                other.importance == importance));
+            (identical(other.color, color) || other.color == color));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, text, done, deadline, importance);
+  int get hashCode => Object.hash(runtimeType, id, text, done, importance,
+      createdAt, changedAt, lastUpdatedBy, deadline, color);
 
   @JsonKey(ignore: true)
   @override
@@ -211,8 +282,12 @@ abstract class _Todo implements Todo {
       {required final String id,
       required final String text,
       required final bool done,
+      required final Importance importance,
+      required final int createdAt,
+      required final int changedAt,
+      required final String lastUpdatedBy,
       final DateTime? deadline,
-      final Importance? importance}) = _$TodoImpl;
+      final String? color}) = _$TodoImpl;
 
   factory _Todo.fromJson(Map<String, dynamic> json) = _$TodoImpl.fromJson;
 
@@ -223,9 +298,17 @@ abstract class _Todo implements Todo {
   @override
   bool get done;
   @override
+  Importance get importance;
+  @override
+  int get createdAt;
+  @override
+  int get changedAt;
+  @override
+  String get lastUpdatedBy;
+  @override
   DateTime? get deadline;
   @override
-  Importance? get importance;
+  String? get color;
   @override
   @JsonKey(ignore: true)
   _$$TodoImplCopyWith<_$TodoImpl> get copyWith =>

@@ -4,21 +4,17 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_list/domain/model/todo.dart';
-import 'package:todo_list/domain/repository/todo_repository.dart';
+import 'package:todo_list/domain/repository/local_todo_repository.dart';
 import 'package:todo_list/internal/logger.dart';
 
-class LocalTodoRepository implements TodoRepository {
-  final String key;
+class LocalTodoRepository implements ILocalTodoRepository {
+  final String todoListKey;
+  final String revisionKey;
 
   LocalTodoRepository({
-    required this.key,
+    required this.todoListKey,
+    required this.revisionKey,
   });
-
-  final StreamController<List<Todo>> _todoListStreamController =
-      StreamController.broadcast();
-
-  @override
-  Stream<List<Todo>> get todoListStream => _todoListStreamController.stream;
 
   List<Todo> _todoList = [];
 
@@ -26,15 +22,16 @@ class LocalTodoRepository implements TodoRepository {
   Future<void> init() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final rawData = prefs.getString(key);
+      final rawData = prefs.getString(todoListKey);
       if (rawData == null) return;
       final jsonList = await compute(jsonDecode, rawData) as List<dynamic>;
-      final todos = jsonList.map((json) => Todo.fromJson(json)).toList();
+      final todos = jsonList
+          .map<Todo>((json) => Todo.fromJson(json as Map<String, dynamic>))
+          .toList();
       _todoList = todos;
-      _todoListStreamController.add(_todoList);
-      logger.i('Todos loaded');
-    } catch (e, s) {
-      logger.f('TodoList load error', error: e, stackTrace: s);
+      logger.i('Local todos loaded');
+    } on Exception catch (e, s) {
+      logger.f('Local todoList load error', error: e, stackTrace: s);
     }
   }
 
@@ -46,7 +43,7 @@ class LocalTodoRepository implements TodoRepository {
       _todoList.where((todo) => !todo.done).toList();
 
   @override
-  Future<void> saveTodo(Todo todo) async {
+  Future<Todo> saveTodo(Todo todo) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final todoIndex = _todoList.indexWhere((t) => t.id == todo.id);
@@ -55,39 +52,37 @@ class LocalTodoRepository implements TodoRepository {
       } else {
         _todoList.insert(0, todo);
       }
-      _todoListStreamController.add(_todoList);
-      prefs.setString(key, json.encode(_todoList));
-      logger.i('Todo saved');
-    } catch (e, s) {
-      logger.f('Error saving the todo', error: e, stackTrace: s);
+      await prefs.setString(todoListKey, json.encode(_todoList));
+      logger.i('Local todo saved');
+      return todo;
+    } on Exception catch (e, s) {
+      logger.f('Local error saving the todo', error: e, stackTrace: s);
       rethrow;
     }
   }
 
   @override
-  Future<void> deleteTodo(String id) async {
+  Future<Todo?> deleteTodo(String id) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final todoIndex = _todoList.indexWhere((t) => t.id == id);
       if (todoIndex == -1) {
-        logger.e('There is no such todo');
-        return;
+        logger.e('Local there is no such todo');
+        return null;
       }
+      final todo = _todoList[todoIndex];
       _todoList.removeAt(todoIndex);
-      _todoListStreamController.add(_todoList);
-      prefs.setString(key, json.encode(_todoList));
-      logger.i('Todo deleted');
-    } catch (e, s) {
-      logger.f('Error deleting the todo', error: e, stackTrace: s);
+      await prefs.setString(todoListKey, json.encode(_todoList));
+      logger.i('Local todo deleted');
+      return todo;
+    } on Exception catch (e, s) {
+      logger.f('Local error deleting the todo', error: e, stackTrace: s);
       rethrow;
     }
   }
 
-  @override
   int get countDoneTodos => _todoList.where((todo) => todo.done).length;
 
   @override
-  void dispose() {
-    _todoListStreamController.close();
-  }
+  void dispose() {}
 }

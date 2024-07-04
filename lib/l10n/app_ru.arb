@@ -1,0 +1,14 @@
+{
+  "@@locale": "ru",
+  "myTodosTitle": "Мои дела",
+  "doneSubtitle" : "Выполнено",
+  "empty": "Пусто",
+  "hintTodoTextField" : "Что нужно сделать...",
+  "importance" : "Важность",
+  "no" : "Нет",
+  "low" : "Низкий",
+  "high" : "Высокий",
+  "delete" : "Удалить",
+  "doneBy" : "Сделать до",
+  "save" : "СОХРАНИТЬ"
+}

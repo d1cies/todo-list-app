@@ -1,1 +1,1 @@
-enum Importance { no, low, high }
+enum Importance { basic, low, important }

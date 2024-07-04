@@ -25,7 +25,7 @@ class AppTheme {
             (states) {
               if (!states.contains(WidgetState.selected)) {
                 return const BorderSide(
-                  width: 2.0,
+                  width: 2,
                   color: AppColor.lightSeparator,
                 );
               }

@@ -4,12 +4,12 @@ import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_list/domain/model/todo.dart';
-import 'package:todo_list/domain/repository/todo_repository.dart';
+import 'package:todo_list/domain/use_case/todo_use_case.dart';
 import 'package:todo_list/internal/di/configure_dependencies.dart';
+import 'package:todo_list/presentation/todo_list/todo_list_screen/todo_list_screen_model.dart';
+import 'package:todo_list/presentation/todo_list/todo_list_screen/todo_list_screen_widget.dart';
 import 'package:todo_list/router/app_router.dart';
 import 'package:todo_list/util/wm_base.dart';
-import 'todo_list_screen_model.dart';
-import 'todo_list_screen_widget.dart';
 
 abstract interface class ITodoListScreenWidgetModel
     implements IWidgetModel, IThemeProvider {
@@ -36,7 +36,7 @@ TodoListScreenWidgetModel defaultTodoListScreenWidgetModelFactory(
     BuildContext context) {
   return TodoListScreenWidgetModel(
     TodoListScreenModel(),
-    todoRepository: getIt.get<TodoRepository>(),
+    todoUseCase: getIt.get<ITodoUseCase>(),
   );
 }
 
@@ -48,10 +48,10 @@ class TodoListScreenWidgetModel
     implements ITodoListScreenWidgetModel {
   TodoListScreenWidgetModel(
     super.model, {
-    required this.todoRepository,
+    required this.todoUseCase,
   });
 
-  final TodoRepository todoRepository;
+  final ITodoUseCase todoUseCase;
 
   @override
   final EntityStateNotifier<List<Todo>> todoListState = EntityStateNotifier();
@@ -67,23 +67,28 @@ class TodoListScreenWidgetModel
   @override
   Future<void> initWidgetModel() async {
     super.initWidgetModel();
-    todoListStreamSb = todoRepository.todoListStream.listen((_) {
+    loadTodoList();
+    todoListStreamSb = todoUseCase.todoListStream.listen((todoList) {
+      currentTodoList(todoList);
       doneTodoCountController.value = doneTodosCount;
-      loadTodoList();
     });
   }
 
   Future<void> loadTodoList() async {
     todoListState.loading();
     try {
-      if (showDoneTodosController.value) {
-        todoListState.content(await todoRepository.getTodoList());
-      } else {
-        todoListState.content(await todoRepository.getNotDoneTodoList());
-      }
-    } catch (e) {
-      todoListState.error();
+      await todoUseCase.getTodoList();
+    } on Exception catch (e) {
+      todoListState.error(e);
     }
+  }
+
+  void currentTodoList(List<Todo> list) {
+    if (showDoneTodosController.value) {
+       todoListState.content(list);
+       return;
+    }
+    todoListState.content(list.where((todo) => !todo.done).toList());
   }
 
   @override
@@ -96,12 +101,12 @@ class TodoListScreenWidgetModel
 
   @override
   Future<void> createTodo(Todo todo) async {
-    await todoRepository.saveTodo(todo);
+    await todoUseCase.updateTodo(todo);
   }
 
   @override
   Future<void> completeTodo(Todo todo) async {
-    await todoRepository.saveTodo(
+    await todoUseCase.updateTodo(
       todo.copyWith(
         done: !todo.done,
       ),
@@ -110,7 +115,7 @@ class TodoListScreenWidgetModel
 
   @override
   Future<void> deleteTodo(String todoId) async {
-    await todoRepository.deleteTodo(todoId);
+    await todoUseCase.deleteTodo(todoId);
   }
 
   @override
@@ -119,16 +124,11 @@ class TodoListScreenWidgetModel
   }
 
   @override
-  int get doneTodosCount => todoRepository.countDoneTodos;
+  int get doneTodosCount => todoUseCase.countDoneTodos;
 
   @override
   Future<void> changeDoneTodosVisibility() async {
     showDoneTodosController.value = !showDoneTodosController.value;
-    final visibility = showDoneTodosController.value;
-    if (visibility) {
-      todoListState.content(await todoRepository.getTodoList());
-    } else {
-      todoListState.content(await todoRepository.getNotDoneTodoList());
-    }
+    currentTodoList(todoUseCase.allCurrentTodoList);
   }
 }
