@@ -1,4 +1,4 @@
-import 'package:todo_list/generated/app_localizations.dart';
+import 'app_localizations.dart';
 
 /// The translations for English (`en`).
 class AppLocalizationsEn extends AppLocalizations {

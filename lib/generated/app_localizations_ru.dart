@@ -1,4 +1,4 @@
-import 'package:todo_list/generated/app_localizations.dart';
+import 'app_localizations.dart';
 
 /// The translations for Russian (`ru`).
 class AppLocalizationsRu extends AppLocalizations {
