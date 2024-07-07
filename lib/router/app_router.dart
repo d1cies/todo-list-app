@@ -7,9 +7,13 @@ class AppRouter extends _$AppRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(
+          path: Routes.allTodos,
           page: TodoListRoute.page,
           initial: true,
         ),
-        AutoRoute(page: TodoDetailRoute.page),
+        AutoRoute(
+          page: TodoDetailRoute.page,
+          path: Routes.todo
+        ),
       ];
 }
