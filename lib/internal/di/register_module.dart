@@ -19,10 +19,10 @@ abstract class RegisterModule {
     (dio.httpClientAdapter as IOHttpClientAdapter)
         .createHttpClient = () => HttpClient()
       ..badCertificateCallback = (X509Certificate cert, String host, int port) {
-        return host == "beta.mrdekk.ru";
+        return host == 'beta.mrdekk.ru';
       };
 
-    const timeout = Duration(seconds: 30);
+    const timeout = Duration(seconds: 5);
 
     dio.options
       ..contentType = 'application/json'
@@ -63,4 +63,6 @@ abstract class RegisterModule {
         networkTodoRepository: _networkTodoRepository,
         revisionKey: 'revision',
       )..init();
+
+
 }

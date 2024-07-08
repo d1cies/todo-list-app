@@ -60,7 +60,7 @@ class _TodoService implements TodoService {
     )
             .compose(
               _dio.options,
-              'list',
+              '/list',
               queryParameters: queryParameters,
               data: _data,
             )

@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todo_list/data/dto/request/todo_request.dart';
+import 'package:todo_list/data/dto/request/update_todo_list_request.dart';
 import 'package:todo_list/data/mapper/todo_mapper.dart';
 import 'package:todo_list/data/service/todo_service.dart';
 import 'package:todo_list/domain/model/todo.dart';
@@ -31,7 +33,7 @@ class NetworkTodoRepository extends INetworkTodoRepository {
   }
 
   @override
-  FutureOr<List<Todo>> getTodoList() async {
+  Future<List<Todo>> getTodoList() async {
     try {
       final response = await _service.getTodoList();
       await _setRevision(response.revision);
@@ -44,10 +46,29 @@ class NetworkTodoRepository extends INetworkTodoRepository {
   }
 
   @override
+  Future<List<Todo>> updateTodoList(List<Todo> todosList) async {
+    try {
+      final response = await _service.updateTodoList(
+        request: UpdateTodoListRequest(
+          list: todosList.map(mapTodoToTodoElement).toList(),
+        ),
+      );
+      logger.i('Network todos updated');
+      return response.list.map(mapDtoToTodo).toList();
+    } on DioException catch (e, s) {
+      logger.f('Network error updating todo list', error: e, stackTrace: s);
+      rethrow;
+    }
+  }
+
+  @override
   Future<Todo> createTodo(Todo todo) async {
     try {
-      final response =
-          await _service.createTodo(request: mapTodoToRequest(todo));
+      final response = await _service.createTodo(
+        request: TodoRequest(
+          element: mapTodoToTodoElement(todo),
+        ),
+      );
       await _setRevision(response.revision);
       logger.i('Network todo created');
       return mapDtoToTodo(response.element);
@@ -62,7 +83,9 @@ class NetworkTodoRepository extends INetworkTodoRepository {
     try {
       final response = await _service.updateTodo(
         todo.id,
-        request: mapTodoToRequest(todo),
+        request: TodoRequest(
+          element: mapTodoToTodoElement(todo),
+        ),
       );
       await _setRevision(response.revision);
       logger.i('Network todo updated');

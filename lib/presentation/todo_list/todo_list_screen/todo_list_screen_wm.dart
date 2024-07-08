@@ -67,7 +67,7 @@ class TodoListScreenWidgetModel
   @override
   Future<void> initWidgetModel() async {
     super.initWidgetModel();
-    loadTodoList();
+    // await loadTodoList();
     todoListStreamSb = todoUseCase.todoListStream.listen((todoList) {
       currentTodoList(todoList);
       doneTodoCountController.value = doneTodosCount;

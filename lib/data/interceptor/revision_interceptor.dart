@@ -7,8 +7,8 @@ class RevisionInterceptor extends Interceptor {
   RevisionInterceptor({required this.revisionKey});
 
   Future<int> getCurrentRevision() async {
-    final _prefs = await SharedPreferences.getInstance();
-    final revision = _prefs.getInt(revisionKey);
+    final prefs = await SharedPreferences.getInstance();
+    final revision = prefs.getInt(revisionKey);
     return revision ?? 1;
   }
 
