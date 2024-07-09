@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_list/domain/model/todo.dart';
@@ -102,12 +101,13 @@ class TodoUseCase implements ITodoUseCase {
             if (networkTodo != todo) {
               if (networkTodo.changedAt > todo.changedAt) {
                 await _localTodoRepository.saveTodo(networkTodo);
+              } else {
+                await _networkTodoRepository.updateTodo(todo);
               }
             }
           }
         }
-        // иначе значения не меняются, видимо, такая логика на бэкенде
-        // await _networkTodoRepository.updateTodoList([]);
+
         final updatedTodos = await _networkTodoRepository.updateTodoList(
           await _localTodoRepository.getTodoList(),
         );
@@ -143,7 +143,8 @@ class TodoUseCase implements ITodoUseCase {
   @override
   Future<void> createTodo(Todo todo) async {
     await _localTodoRepository.saveTodo(todo);
-    _todoList.insert(0, todo);
+    final list = await _localTodoRepository.getTodoList();
+    _todoList = list;
     _todoListStreamController.add(_todoList);
     if (isInternetConnection(await connectivityResult)) {
       await _networkTodoRepository.createTodo(todo);
@@ -173,11 +174,9 @@ class TodoUseCase implements ITodoUseCase {
   @override
   Future<void> deleteTodo(String id) async {
     await _localTodoRepository.deleteTodo(id);
-    final todoIndex = _todoList.indexWhere((t) => t.id == id);
-    if (todoIndex != -1) {
-      _todoList.removeAt(todoIndex);
-      _todoListStreamController.add(_todoList);
-    }
+    final list = await _localTodoRepository.getTodoList();
+    _todoList = list;
+    _todoListStreamController.add(_todoList);
     if (isInternetConnection(await connectivityResult)) {
       await _networkTodoRepository.deleteTodo(id);
     }
