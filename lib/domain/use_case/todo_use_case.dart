@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:rxdart/rxdart.dart';
@@ -84,11 +85,12 @@ class TodoUseCase implements ITodoUseCase {
   }
 
   Future<void> syncLocalAndNetworkTodos() async {
-    final localRevision = await _getRevision();
-    final networkTodoList = await _networkTodoRepository.getTodoList();
+    final localRevision = await _getRevision() ?? 1;
     final localTodoList = await _localTodoRepository.getTodoList();
-    final networkRevision = await _getRevision();
-
+    final networkTodoList = await _networkTodoRepository.getTodoList();
+    final networkRevision = await _getRevision() ?? 1;
+    await updateRevision(networkRevision, localRevision);
+    logger.i('Network revision $networkRevision');
     if (networkRevision != localRevision ||
         !sameTodos(networkTodoList, localTodoList)) {
       if (localTodoList.isNotEmpty) {
@@ -135,6 +137,11 @@ class TodoUseCase implements ITodoUseCase {
 
   bool sameTodos(List<Todo> networkTodos, List<Todo> localTodos) {
     return localTodos.every(networkTodos.contains);
+  }
+
+  Future<void> updateRevision(int networkRevision, int localRevision) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(revisionKey, max(networkRevision, localRevision));
   }
 
   @override

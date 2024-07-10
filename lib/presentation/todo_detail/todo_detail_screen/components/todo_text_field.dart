@@ -23,6 +23,7 @@ class TodoTextField extends StatelessWidget {
         controller: textController,
         focusNode: textFocusNode,
         maxLines: null,
+        onTapOutside: (_) => FocusScope.of(context).unfocus(),
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
           hintText: AppLocalizations.of(context).hintTodoTextField,
