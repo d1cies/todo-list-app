@@ -64,6 +64,4 @@ abstract class RegisterModule {
         networkTodoRepository: _networkTodoRepository,
         revisionKey: InternalConstants.revisionKey,
       )..init();
-
-
 }

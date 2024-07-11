@@ -23,6 +23,7 @@ void main() {
       await widgetTester.pumpAndSettle();
 
       // не захотело работать, причина пока не понятна
+      // само добавление работает
 
       // await widgetTester.tap(find.byType(DropdownMenu<Importance>));
       // await widgetTester.pumpAndSettle();

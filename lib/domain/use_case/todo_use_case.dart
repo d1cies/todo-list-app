@@ -62,6 +62,7 @@ class TodoUseCase implements ITodoUseCase {
 
   @override
   void init() {
+    /// подписка на стрим, чтобы обновлять текущее состояние сети
     _connectivitySubscription =
         Connectivity().onConnectivityChanged.listen((result) async {
       await getTodoList();
@@ -87,6 +88,9 @@ class TodoUseCase implements ITodoUseCase {
     }
   }
 
+  /// синхронизация через сравнения полученных из жвух источников списков
+  /// приоритет отдается локальным данным всегда, кроме случая, если задача
+  /// с сервера была изменена позднее
   Future<void> syncLocalAndNetworkTodos() async {
     final localRevision = await _getRevision() ?? 1;
     final localTodoList = await _localTodoRepository.getTodoList();

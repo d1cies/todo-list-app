@@ -11,9 +11,6 @@ class AppRouter extends _$AppRouter {
           page: TodoListRoute.page,
           initial: true,
         ),
-        AutoRoute(
-          page: TodoDetailRoute.page,
-          path: Routes.todo
-        ),
+        AutoRoute(page: TodoDetailRoute.page, path: Routes.todo),
       ];
 }

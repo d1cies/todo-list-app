@@ -107,9 +107,9 @@ void main() {
 
       test(
         'и его метод deleteTodo должен выполнить обращение к TodoService и вернуть удаленную Todo',
-            () async {
+        () async {
           final deletedTodo =
-          await networkTodoRepository.deleteTodo(mockTodoList.first.id);
+              await networkTodoRepository.deleteTodo(mockTodoList.first.id);
           expect(deletedTodo, mockTodoList.first);
         },
       );

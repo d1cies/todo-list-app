@@ -84,7 +84,6 @@ class TodoListScreenWidgetModel
     });
   }
 
-
   @override
   Future<void> refreshTodoList() async {
     logger.i('Refresh list by hands');

@@ -4,7 +4,6 @@ import 'package:todo_list/domain/model/todo.dart';
 import 'package:todo_list/domain/use_case/todo_use_case.dart';
 
 class MockTodoUseCase extends Mock implements ITodoUseCase {
-
   final BehaviorSubject<List<Todo>> _todoListStreamController =
       BehaviorSubject();
 
