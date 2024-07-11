@@ -4,8 +4,11 @@ import 'package:todo_list/app/theme/app_theme.dart';
 import 'package:todo_list/generated/app_localizations.dart';
 import 'package:todo_list/router/app_router.dart';
 
+import 'environment/environment.dart';
+
 class TodoListApp extends StatefulWidget {
-  TodoListApp({super.key});
+  final Environment environment;
+  TodoListApp({super.key, required this.environment});
 
   @override
   State<TodoListApp> createState() => _TodoListAppState();

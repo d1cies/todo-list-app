@@ -13,13 +13,13 @@ import 'package:todo_list/util/lifecycle_component.dart';
 abstract class ITodoUseCase implements LifeCycleComponent {
   Stream<List<Todo>> get todoListStream;
 
+  List<Todo> get todoList;
+
   int get countDoneTodos;
 
   Future<void> getTodoList();
 
   List<Todo> get allCurrentTodoList;
-
-  Future<void> getTodo(String id);
 
   Future<void> createTodo(Todo todo);
 
@@ -53,6 +53,9 @@ class TodoUseCase implements ITodoUseCase {
   int get countDoneTodos => _todoList.where((todo) => todo.done).length;
 
   List<Todo> _todoList = [];
+
+  @override
+  List<Todo> get todoList => _todoList;
 
   Future<List<ConnectivityResult>> get connectivityResult =>
       Connectivity().checkConnectivity();
@@ -187,11 +190,6 @@ class TodoUseCase implements ITodoUseCase {
     if (isInternetConnection(await connectivityResult)) {
       await _networkTodoRepository.deleteTodo(id);
     }
-  }
-
-  @override
-  Future<void> getTodo(String id) async {
-    await _networkTodoRepository.getTodo(id);
   }
 
   Future<int?> _getRevision() async {

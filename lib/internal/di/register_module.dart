@@ -10,6 +10,7 @@ import 'package:todo_list/data/repository/local_todo_repository.dart';
 import 'package:todo_list/data/repository/network_todo_repository.dart';
 import 'package:todo_list/data/service/todo_service.dart';
 import 'package:todo_list/domain/use_case/todo_use_case.dart';
+import 'package:todo_list/internal/di/constant.dart';
 
 @module
 abstract class RegisterModule {
@@ -38,7 +39,7 @@ abstract class RegisterModule {
           requestBody: true,
         ),
         AuthInterceptor(),
-        RevisionInterceptor(revisionKey: 'revision'),
+        RevisionInterceptor(revisionKey: InternalConstants.revisionKey),
       ],
     );
 
@@ -47,21 +48,21 @@ abstract class RegisterModule {
 
   @singleton
   LocalTodoRepository get _localTodoRepository => LocalTodoRepository(
-        todoListKey: 'todo-list',
-        revisionKey: 'revision',
+        todoListKey: InternalConstants.todoListKey,
+        revisionKey: InternalConstants.revisionKey,
       )..init();
 
   @singleton
   NetworkTodoRepository get _networkTodoRepository => NetworkTodoRepository(
         TodoService(buildDio()),
-        revisionKey: 'revision',
+        revisionKey: InternalConstants.revisionKey,
       );
 
   @singleton
   ITodoUseCase get todoUseCase => TodoUseCase(
         localTodoRepository: _localTodoRepository,
         networkTodoRepository: _networkTodoRepository,
-        revisionKey: 'revision',
+        revisionKey: InternalConstants.revisionKey,
       )..init();
 
 

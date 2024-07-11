@@ -20,6 +20,7 @@ class TodoTextField extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
       elevation: 2,
       child: TextField(
+        key: const ValueKey('todoTextField'),
         controller: textController,
         focusNode: textFocusNode,
         maxLines: null,

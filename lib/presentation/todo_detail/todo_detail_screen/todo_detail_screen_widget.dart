@@ -25,102 +25,100 @@ class TodoDetailScreenWidget
   @override
   Widget build(ITodoDetailScreenWidgetModel wm) {
     final isNewTodo = todo == null;
-    return GestureDetector(
-      onTap: wm.todoTextFocusNode.unfocus,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          leading: GestureDetector(
-            onTap: wm.close,
-            child: Icon(
-              size: 24,
-              Icons.close,
-              color: wm.color.labelPrimary,
-            ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        leading: GestureDetector(
+          onTap: wm.close,
+          child: Icon(
+            size: 24,
+            Icons.close,
+            color: wm.color.labelPrimary,
           ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: TextButton(
-                  onPressed: wm.saveTodo,
-                  child: Text(
-                    wm.localizations.save,
-                    style: wm.text.button.copyWith(
-                      color: wm.color.blue,
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: TextButton(
+                key: const ValueKey('todoSaveButton'),
+                onPressed: wm.saveTodo,
+                child: Text(
+                  wm.localizations.save,
+                  style: wm.text.button.copyWith(
+                    color: wm.color.blue,
+                  ),
+                )),
+          ),
+        ],
+      ),
+      body: Center(
+        child: ListView(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 23,
+          ),
+          children: [
+            TodoTextField(
+              textController: wm.todoTextController,
+              textFocusNode: wm.todoTextFocusNode,
+            ),
+            const SizedBox(height: 28),
+            Text(
+              wm.localizations.importance,
+              style: wm.text.body.copyWith(
+                color: wm.color.labelPrimary,
+              ),
+            ),
+            SelectImportance(wm: wm),
+            const Divider(height: 0),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      wm.localizations.doneBy,
+                      style: wm.text.body.copyWith(
+                        color: wm.color.labelPrimary,
+                      ),
                     ),
-                  )),
+                    ValueListenableBuilder(
+                      valueListenable: wm.deadlineController,
+                      builder: (context, deadline, _) {
+                        if (deadline != null) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 4),
+                            child: Text(deadline.fromDateToString(context),
+                                style: wm.text.subhead.copyWith(
+                                  color: wm.color.blue,
+                                )),
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    ),
+                  ],
+                ),
+                ValueListenableBuilder(
+                  valueListenable: wm.deadlineEnableController,
+                  builder: (context, enabled, _) {
+                    return DateSwitch(
+                      enabled: enabled,
+                      switchDeadline: wm.switchDeadline,
+                    );
+                  },
+                ),
+              ],
+            ),
+            const Divider(),
+            DeleteElement(
+              isNewTodo: isNewTodo,
+              id: todo?.id,
+              deleteTodo: wm.deleteTodo,
             ),
           ],
-        ),
-        body: Center(
-          child: ListView(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 23,
-            ),
-            children: [
-              TodoTextField(
-                textController: wm.todoTextController,
-                textFocusNode: wm.todoTextFocusNode,
-              ),
-              const SizedBox(height: 28),
-              Text(
-                wm.localizations.importance,
-                style: wm.text.body.copyWith(
-                  color: wm.color.labelPrimary,
-                ),
-              ),
-              SelectImportance(wm: wm),
-              const Divider(height: 0),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        wm.localizations.doneBy,
-                        style: wm.text.body.copyWith(
-                          color: wm.color.labelPrimary,
-                        ),
-                      ),
-                      ValueListenableBuilder(
-                        valueListenable: wm.deadlineController,
-                        builder: (context, deadline, _) {
-                          if (deadline != null) {
-                            return Padding(
-                              padding: const EdgeInsets.only(top: 4),
-                              child: Text(deadline.fromDateToString(context),
-                                  style: wm.text.subhead.copyWith(
-                                    color: wm.color.blue,
-                                  )),
-                            );
-                          }
-                          return const SizedBox.shrink();
-                        },
-                      ),
-                    ],
-                  ),
-                  ValueListenableBuilder(
-                    valueListenable: wm.deadlineEnableController,
-                    builder: (context, enabled, _) {
-                      return DateSwitch(
-                        enabled: enabled,
-                        switchDeadline: wm.switchDeadline,
-                      );
-                    },
-                  ),
-                ],
-              ),
-              const Divider(),
-              DeleteElement(
-                isNewTodo: isNewTodo,
-                id: todo?.id,
-                deleteTodo: wm.deleteTodo,
-              ),
-            ],
-          ),
         ),
       ),
     );

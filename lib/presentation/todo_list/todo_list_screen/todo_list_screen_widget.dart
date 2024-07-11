@@ -91,6 +91,7 @@ class TodoListScreenWidget
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        key: const ValueKey('todoCreation'),
         onPressed: () => wm.toTodoDetail(null),
         elevation: 5,
         shape: const CircleBorder(),
