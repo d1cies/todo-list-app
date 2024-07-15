@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class RevisionInterceptor extends Interceptor {
   final String revisionKey;
 
-  RevisionInterceptor({required this.revisionKey});
+  const RevisionInterceptor({required this.revisionKey});
 
   Future<int> _getCurrentRevision() async {
     final prefs = await SharedPreferences.getInstance();

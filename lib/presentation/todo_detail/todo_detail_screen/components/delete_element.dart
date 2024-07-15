@@ -33,9 +33,9 @@ class DeleteElement extends StatelessWidget {
                 'assets/svg/trash.svg',
                 colorFilter: ColorFilter.mode(
                   isNewTodo
-                      ? colors.labelPrimary.withOpacity(0.15)
+                      ? colors.labelDisable
                       : colors.red,
-                  BlendMode.modulate,
+                  BlendMode.srcIn,
                 ),
               ),
               const SizedBox(width: 12),
@@ -43,7 +43,7 @@ class DeleteElement extends StatelessWidget {
                 localizations.delete,
                 style: text.body.copyWith(
                   color: isNewTodo
-                      ? colors.labelPrimary.withOpacity(0.15)
+                      ? colors.labelDisable
                       : colors.red,
                 ),
               ),

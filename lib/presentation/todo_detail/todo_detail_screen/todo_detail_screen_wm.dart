@@ -175,16 +175,7 @@ class TodoDetailScreenWidgetModel
         const Duration(days: 1000),
       ),
       builder: (context, child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light(
-              primary: color.blue,
-              surface: color.white,
-              onSurface: color.labelPrimary,
-            ),
-          ),
-          child: child!,
-        );
+        return child!;
       },
     );
     if (deadlineController.value == null) {

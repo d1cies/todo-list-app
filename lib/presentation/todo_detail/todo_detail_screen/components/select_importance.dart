@@ -31,10 +31,6 @@ class SelectImportance extends StatelessWidget {
             borderSide: BorderSide(color: Colors.transparent),
           ),
         ),
-        menuStyle: MenuStyle(
-          padding: WidgetStateProperty.all(EdgeInsets.zero),
-          backgroundColor: WidgetStateProperty.all(wm.color.white),
-        ),
         onSelected: (cur) => wm.selectImportance(cur ?? Importance.basic),
         dropdownMenuEntries:
             wm.importanceMap.entries.map<DropdownMenuEntry<Importance>>(

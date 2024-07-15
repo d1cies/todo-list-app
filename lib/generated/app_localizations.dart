@@ -158,6 +158,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'SAVE'**
   String get save;
+
+  /// No description provided for @newTodo.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get newTodo;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

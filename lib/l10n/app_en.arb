@@ -10,5 +10,6 @@
    "high" : "High",
    "delete" : "Delete",
    "doneBy" : "Done by",
-   "save" : "SAVE"
+   "save" : "SAVE",
+   "newTodo": "New"
 }

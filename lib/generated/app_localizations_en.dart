@@ -36,4 +36,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get save => 'SAVE';
+
+  @override
+  String get newTodo => 'New';
 }

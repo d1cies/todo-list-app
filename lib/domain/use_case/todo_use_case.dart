@@ -46,13 +46,13 @@ class TodoUseCase implements ITodoUseCase {
   late final StreamSubscription<List<ConnectivityResult>>?
       _connectivitySubscription;
 
+  List<Todo> _todoList = [];
+
   @override
   Stream<List<Todo>> get todoListStream => _todoListStreamController.stream;
 
   @override
   int get countDoneTodos => _todoList.where((todo) => todo.done).length;
-
-  List<Todo> _todoList = [];
 
   @override
   List<Todo> get todoList => _todoList;

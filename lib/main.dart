@@ -11,7 +11,12 @@ void main() => startApp();
 Future<void> startApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations(
-    [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+    [
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight
+    ],
   );
   await dotenv.load(fileName: ".env");
   await initializeDateFormatting();

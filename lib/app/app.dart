@@ -44,6 +44,7 @@ class _TodoListAppState extends State<TodoListApp> {
     return MaterialApp.router(
       routerConfig: _appRouter.config(),
       theme: AppTheme.light().themeData,
+      darkTheme: AppTheme.dark().themeData,
       debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
