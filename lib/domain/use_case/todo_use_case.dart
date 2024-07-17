@@ -4,6 +4,8 @@ import 'dart:math';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todo_list/analytics/analytics_events_wrapper.dart';
+import 'package:todo_list/analytics/event/analytics_event.dart';
 import 'package:todo_list/domain/model/todo.dart';
 import 'package:todo_list/domain/repository/local_todo_repository.dart';
 import 'package:todo_list/domain/repository/network_todo_repository.dart';
@@ -32,11 +34,13 @@ class TodoUseCase implements ITodoUseCase {
   final ILocalTodoRepository _localTodoRepository;
   final INetworkTodoRepository _networkTodoRepository;
   final String revisionKey;
+  final IAnalyticsEventsWrapper analyticsEventsWrapper;
 
   TodoUseCase({
     required ILocalTodoRepository localTodoRepository,
     required INetworkTodoRepository networkTodoRepository,
     required this.revisionKey,
+    required this.analyticsEventsWrapper,
   })  : _localTodoRepository = localTodoRepository,
         _networkTodoRepository = networkTodoRepository;
 
@@ -79,7 +83,13 @@ class TodoUseCase implements ITodoUseCase {
   Future<void> getTodoList() async {
     if (isInternetConnection(await connectivityResult)) {
       logger.i('RECONNECT');
-      await syncLocalAndNetworkTodos();
+      try {
+        await syncLocalAndNetworkTodos();
+        analyticsEventsWrapper.addEvent(AnalyticsEvent(name: 'get_todos'));
+      } on Exception catch (e, s) {
+        logger.e('Failed sync todos');
+        rethrow;
+      }
     } else {
       logger.i('NO INTERNET');
       final localTodoList = await _localTodoRepository.getTodoList();
@@ -92,10 +102,10 @@ class TodoUseCase implements ITodoUseCase {
   /// приоритет отдается локальным данным всегда, кроме случая, если задача
   /// с сервера была изменена позднее
   Future<void> syncLocalAndNetworkTodos() async {
-    final localRevision = await _getRevision() ?? 1;
+    final localRevision = await _getRevision();
     final localTodoList = await _localTodoRepository.getTodoList();
     final networkTodoList = await _networkTodoRepository.getTodoList();
-    final networkRevision = await _getRevision() ?? 1;
+    final networkRevision = await _getRevision();
     await updateRevision(networkRevision, localRevision);
     logger.i('Network revision $networkRevision');
     if (networkRevision != localRevision ||
@@ -163,6 +173,14 @@ class TodoUseCase implements ITodoUseCase {
     if (isInternetConnection(await connectivityResult)) {
       await _networkTodoRepository.createTodo(todo);
     }
+    analyticsEventsWrapper.addEvent(
+      AnalyticsEvent(
+        name: 'create_todo',
+        parameters: {
+          'id': todo.id,
+        },
+      ),
+    );
   }
 
   @override
@@ -179,6 +197,14 @@ class TodoUseCase implements ITodoUseCase {
       if (isInternetConnection(await connectivityResult)) {
         await _networkTodoRepository.updateTodo(todo);
       }
+      analyticsEventsWrapper.addEvent(
+        AnalyticsEvent(
+          name: 'update_todo',
+          parameters: {
+            'id': todo.id,
+          },
+        ),
+      );
     } on Exception catch (e, s) {
       _todoList[todoIndex] = oldTodo;
       rethrow;
@@ -194,11 +220,19 @@ class TodoUseCase implements ITodoUseCase {
     if (isInternetConnection(await connectivityResult)) {
       await _networkTodoRepository.deleteTodo(id);
     }
+    analyticsEventsWrapper.addEvent(
+      AnalyticsEvent(
+        name: 'delete_todo',
+        parameters: {
+          'id': id,
+        },
+      ),
+    );
   }
 
-  Future<int?> _getRevision() async {
+  Future<int> _getRevision() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt(revisionKey);
+    return prefs.getInt(revisionKey) ?? 1;
   }
 
   bool isInternetConnection(List<ConnectivityResult> result) {

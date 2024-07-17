@@ -5,6 +5,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:todo_list/app/app.dart';
 import 'package:todo_list/app/environment/environment.dart';
 import 'package:todo_list/internal/di/configure_dependencies.dart';
+import 'package:todo_list/internal/di/register_module.dart';
 
 void main() => startApp();
 
@@ -18,9 +19,10 @@ Future<void> startApp() async {
       DeviceOrientation.landscapeRight
     ],
   );
-  await dotenv.load(fileName: ".env");
+  await dotenv.load();
   await initializeDateFormatting();
   configureDependencies();
+  await initModule();
 
   runApp(
     TodoListApp(
@@ -28,3 +30,5 @@ Future<void> startApp() async {
     ),
   );
 }
+
+

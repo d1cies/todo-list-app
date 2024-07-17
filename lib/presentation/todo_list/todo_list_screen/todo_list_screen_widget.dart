@@ -88,6 +88,14 @@ class TodoListScreenWidget
                   },
                 ),
               ),
+              SliverToBoxAdapter(
+                child: ElevatedButton(
+                  onPressed: () {
+                    throw Exception('fb crash');
+                  },
+                  child: Text('error'),
+                ),
+              ),
             ],
           ),
         ),
