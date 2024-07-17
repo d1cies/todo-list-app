@@ -6,6 +6,7 @@ import 'package:dio/io.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -19,10 +20,12 @@ import 'package:todo_list/data/service/todo_service.dart';
 import 'package:todo_list/domain/use_case/todo_use_case.dart';
 import 'package:todo_list/firebase_options.dart';
 import 'package:todo_list/internal/di/constant.dart';
+import 'package:todo_list/internal/firebase/firebase_remote_handler.dart';
 import 'package:todo_list/internal/logger.dart';
 
 Future<void> initModule() async {
   await _initFirebase();
+
   RegisterModule._analyticsEventsWrapper.addMiddleware(
     FirebaseMiddleware(
       firebaseAnalytics: FirebaseAnalytics.instance,
@@ -45,7 +48,17 @@ Future<void> _initFirebase() async {
     logger.i('Firebase Crashlytics PlatformDispatcher', error: error);
     return true;
   };
+
+  // await _initRemoteConfig();
 }
+
+// Future<void> _initRemoteConfig() async {
+//   final remoteConfig = FirebaseRemoteConfig.instance;
+//   await remoteConfig.setConfigSettings(RemoteConfigSettings(
+//     fetchTimeout: const Duration(minutes: 1),
+//     minimumFetchInterval: const Duration(hours: 1),
+//   ));
+// }
 
 @module
 abstract class RegisterModule {
@@ -103,9 +116,12 @@ abstract class RegisterModule {
 
   @singleton
   ITodoUseCase get todoUseCase => TodoUseCase(
-        localTodoRepository: _localTodoRepository,
-        networkTodoRepository: _networkTodoRepository,
-        revisionKey: InternalConstants.revisionKey,
-        analyticsEventsWrapper: analyticsEventsWrapper
-      )..init();
+      localTodoRepository: _localTodoRepository,
+      networkTodoRepository: _networkTodoRepository,
+      revisionKey: InternalConstants.revisionKey,
+      analyticsEventsWrapper: analyticsEventsWrapper)
+    ..init();
+
+  @singleton
+  FirebaseRemoteHandler get firebaseRemoteHandler => FirebaseRemoteHandler();
 }

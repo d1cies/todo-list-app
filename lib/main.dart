@@ -21,8 +21,8 @@ Future<void> startApp() async {
   );
   await dotenv.load();
   await initializeDateFormatting();
-  configureDependencies();
   await initModule();
+  configureDependencies();
 
   runApp(
     TodoListApp(

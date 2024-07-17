@@ -9,7 +9,7 @@ class AppTheme {
 
   AppTheme._(this.themeData);
 
-  factory AppTheme.light() {
+  factory AppTheme.light({Color? importanceColor}) {
     return AppTheme._(
       ThemeData.light(
         useMaterial3: true,
@@ -71,14 +71,14 @@ class AppTheme {
           ),
         ),
         extensions: [
-          const ThemeColors(
+          ThemeColors(
             supportSeparator: AppColor.lightSeparator,
             supportOverlay: AppColor.lightOverlay,
             labelPrimary: AppColor.lightLabelPrimary,
             labelSecondary: AppColor.lightLabelSecondary,
             labelTertiary: AppColor.lightLabelTertiary,
             labelDisable: AppColor.lightDisable,
-            red: AppColor.lightRed,
+            red: importanceColor ?? AppColor.lightRed,
             green: AppColor.lightGreen,
             blue: AppColor.lightBlue,
             gray: AppColor.lightGray,
@@ -110,7 +110,7 @@ class AppTheme {
     );
   }
 
-  factory AppTheme.dark() {
+  factory AppTheme.dark({Color? importanceColor}) {
     return AppTheme._(
       ThemeData.dark(
         useMaterial3: true,
@@ -172,14 +172,14 @@ class AppTheme {
           ),
         ),
         extensions: [
-          const ThemeColors(
+           ThemeColors(
             supportSeparator: AppColor.darkSeparator,
             supportOverlay: AppColor.darkOverlay,
             labelPrimary: AppColor.darkLabelPrimary,
             labelSecondary: AppColor.darkLabelSecondary,
             labelTertiary: AppColor.darkLabelTertiary,
             labelDisable: AppColor.darkDisable,
-            red: AppColor.darkRed,
+            red: importanceColor ?? AppColor.darkRed,
             green: AppColor.darkGreen,
             blue: AppColor.darkBlue,
             gray: AppColor.darkGray,
