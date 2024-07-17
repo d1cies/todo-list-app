@@ -1,0 +1,57 @@
+name: build
+on:
+  push:
+    branches: [ "homework-4-ci" ]
+  pull_request:
+    branches:
+      [ "main", "homework-4" ]
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Run format
+        run: dart format --set-exit-if-changed .
+
+      - name: Run codegen
+        run: flutter pub run build_runner build -d
+
+      - name: Analyze project
+        run: flutter analyze --no-fatal-info
+
+  tests:
+    name: Run tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '19'
+          cache: gradle
+
+      - name: Setup flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Run tests
+        run: flutter test
