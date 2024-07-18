@@ -37,7 +37,9 @@ Future<void> _initFirebase() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   logger.i('Firebase init');
+}
 
+void initFbCrashlytics() {
   FlutterError.onError = (errorDetails) {
     FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
     logger.i('Firebase Crashlytics', error: errorDetails);
@@ -47,28 +49,19 @@ Future<void> _initFirebase() async {
     logger.i('Firebase Crashlytics PlatformDispatcher', error: error);
     return true;
   };
-
-  // await _initRemoteConfig();
 }
 
-// Future<void> _initRemoteConfig() async {
-//   final remoteConfig = FirebaseRemoteConfig.instance;
-//   await remoteConfig.setConfigSettings(RemoteConfigSettings(
-//     fetchTimeout: const Duration(minutes: 1),
-//     minimumFetchInterval: const Duration(hours: 1),
-//   ));
-// }
 
 @module
 abstract class RegisterModule {
   @singleton
   Dio buildDio() {
     final dio = Dio();
-    (dio.httpClientAdapter as IOHttpClientAdapter)
-        .createHttpClient = () => HttpClient()
-      ..badCertificateCallback = (cert, host, port) {
-        return host == 'beta.mrdekk.ru';
-      };
+    (dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient =
+        () => HttpClient()
+          ..badCertificateCallback = (cert, host, port) {
+            return host == 'beta.mrdekk.ru';
+          };
 
     const timeout = Duration(seconds: 5);
 

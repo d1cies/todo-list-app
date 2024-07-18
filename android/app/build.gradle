@@ -56,27 +56,17 @@ android {
         }
     }
 
-    flavorDimensions += "default"
+    flavorDimensions "default"
     productFlavors {
-        create("free") {
-            dimension = "default"
-            resValue(type = "string", name = "app_name", value = "free flavor example")
-            applicationIdSuffix = ".free"
-        }
-        create("free") {
-            dimension = "default"
-            resValue(type = "string", name = "app_name", value = "free flavor example")
-            applicationIdSuffix = ".free"
-        }
-        production {
+        dev {
             dimension "default"
-            resValue "string", "app_name", "Todo List"
-            applicationIdSuffix ""
-        }
-        development {
-            dimension "default"
-            resValue "string", "app_name", "Todo List [DEV]"
+            resValue"string", "app_name", "todoshka dev"
             applicationIdSuffix ".dev"
+        }
+        prod {
+            dimension "default"
+            resValue "string", "app_name", "todoshka"
+            applicationIdSuffix ""
         }
     }
 }

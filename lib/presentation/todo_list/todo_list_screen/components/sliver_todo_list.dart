@@ -43,22 +43,25 @@ class SliverTodoList extends StatelessWidget {
         itemCount: todos.length + 1,
         itemBuilder: (context, index) {
           if (index == todos.length) {
-            return DecoratedBox(
-              decoration: BoxDecoration(
-                borderRadius: _buildBorderRadius(index, todos.length),
-                color: wm.color.backSecondary,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 14,
-                  horizontal: 50,
+            return InkWell(
+              onTap: () => wm.toTodoDetail(null),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  borderRadius: _buildBorderRadius(index, todos.length),
+                  color: wm.color.backSecondary,
                 ),
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Text(
-                    wm.localizations.newTodo,
-                    style:
-                        wm.text.body.copyWith(color: wm.color.supportSeparator),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 14,
+                    horizontal: 50,
+                  ),
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Text(
+                      wm.localizations.newTodo,
+                      style:
+                          wm.text.body.copyWith(color: wm.color.supportSeparator),
+                    ),
                   ),
                 ),
               ),

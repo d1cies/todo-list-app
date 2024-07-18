@@ -44,7 +44,6 @@ TodoListScreenWidgetModel defaultTodoListScreenWidgetModelFactory(
   );
 }
 
-
 /// Default widget model for TodoListScreenWidget
 class TodoListScreenWidgetModel
     extends WidgetModel<TodoListScreenWidget, TodoListScreenModel>
