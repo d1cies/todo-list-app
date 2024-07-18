@@ -57,9 +57,8 @@ class SliverTodoList extends StatelessWidget {
                   onTap: () {},
                   child: Text(
                     wm.localizations.newTodo,
-                    style: wm.text.body.copyWith(
-                      color: wm.color.supportSeparator
-                    ),
+                    style:
+                        wm.text.body.copyWith(color: wm.color.supportSeparator),
                   ),
                 ),
               ),

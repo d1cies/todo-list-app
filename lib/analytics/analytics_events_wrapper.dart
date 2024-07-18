@@ -5,7 +5,6 @@ import 'package:todo_list/analytics/event/analytics_event.dart';
 import 'package:todo_list/analytics/middleware/middleware.dart';
 import 'package:todo_list/util/lifecycle_component.dart';
 
-
 /// Класс для перехвата событий аналитики
 abstract class IAnalyticsEventsWrapper implements LifeCycleComponent {
   BehaviorSubject<AnalyticsEvent> get eventsStream;

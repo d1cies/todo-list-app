@@ -30,5 +30,3 @@ Future<void> startApp() async {
     ),
   );
 }
-
-
