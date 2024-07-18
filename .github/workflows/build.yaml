@@ -102,7 +102,7 @@ jobs:
       - name: Upload apk
         uses: actions/upload-artifact@v4
         with:
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/flutter-apk/app-prod-release.apk
 
       - name: Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
