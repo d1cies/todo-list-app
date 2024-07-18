@@ -10,9 +10,7 @@ part of 'todo_service.dart';
 
 class _TodoService implements TodoService {
   _TodoService(
-    this._dio, {
-    this.baseUrl,
-  });
+    this._dio);
 
   final Dio _dio;
 
@@ -23,7 +21,6 @@ class _TodoService implements TodoService {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<TodoListResponse>(Options(
       method: 'GET',
@@ -34,7 +31,6 @@ class _TodoService implements TodoService {
               _dio.options,
               '/list',
               queryParameters: queryParameters,
-              data: _data,
             )
             .copyWith(
                 baseUrl: _combineBaseUrls(
@@ -78,7 +74,6 @@ class _TodoService implements TodoService {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<TodoResponse>(Options(
       method: 'GET',
@@ -89,7 +84,6 @@ class _TodoService implements TodoService {
               _dio.options,
               '/list/${id}',
               queryParameters: queryParameters,
-              data: _data,
             )
             .copyWith(
                 baseUrl: _combineBaseUrls(
@@ -162,7 +156,6 @@ class _TodoService implements TodoService {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<TodoResponse>(Options(
       method: 'DELETE',
@@ -173,7 +166,6 @@ class _TodoService implements TodoService {
               _dio.options,
               '/list/${id}',
               queryParameters: queryParameters,
-              data: _data,
             )
             .copyWith(
                 baseUrl: _combineBaseUrls(

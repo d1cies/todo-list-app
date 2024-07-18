@@ -26,7 +26,7 @@ class RevisionInterceptor extends Interceptor {
   }
 
   @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
+  void onResponse(Response<dynamic> response, ResponseInterceptorHandler handler) {
     super.onResponse(response, handler);
     final revision = int.tryParse(
           (response.data as Map<String, dynamic>)['revision'].toString(),

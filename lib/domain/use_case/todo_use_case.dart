@@ -87,7 +87,7 @@ class TodoUseCase implements ITodoUseCase {
         await syncLocalAndNetworkTodos();
         analyticsEventsWrapper.addEvent(AnalyticsEvent(name: 'get_todos'));
       } on Exception catch (e, s) {
-        logger.e('Failed sync todos');
+        logger.e('Failed sync todos', stackTrace: s);
         rethrow;
       }
     } else {
@@ -205,7 +205,7 @@ class TodoUseCase implements ITodoUseCase {
           },
         ),
       );
-    } on Exception catch (e, s) {
+    } on Exception catch (_, __) {
       _todoList[todoIndex] = oldTodo;
       rethrow;
     }

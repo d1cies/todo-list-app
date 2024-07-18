@@ -9,7 +9,6 @@ import 'package:todo_list/presentation/todo_detail/todo_detail_screen/components
 import 'package:todo_list/presentation/todo_detail/todo_detail_screen/components/todo_text_field.dart';
 import 'package:todo_list/presentation/todo_detail/todo_detail_screen/todo_detail_screen_wm.dart';
 
-// TODO: cover with documentation
 /// Main widget for TodoDetailScreen module
 @RoutePage()
 class TodoDetailScreenWidget

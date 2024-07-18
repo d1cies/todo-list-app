@@ -6,7 +6,6 @@ import 'package:dio/io.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -67,7 +66,7 @@ abstract class RegisterModule {
     final dio = Dio();
     (dio.httpClientAdapter as IOHttpClientAdapter)
         .createHttpClient = () => HttpClient()
-      ..badCertificateCallback = (X509Certificate cert, String host, int port) {
+      ..badCertificateCallback = (cert, host, port) {
         return host == 'beta.mrdekk.ru';
       };
 

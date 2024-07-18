@@ -44,14 +44,14 @@ TodoListScreenWidgetModel defaultTodoListScreenWidgetModelFactory(
   );
 }
 
-// TODO: cover with documentation
+
 /// Default widget model for TodoListScreenWidget
 class TodoListScreenWidgetModel
     extends WidgetModel<TodoListScreenWidget, TodoListScreenModel>
     with ThemeProvider
     implements ITodoListScreenWidgetModel {
   TodoListScreenWidgetModel(
-    super.model, {
+    super._model, {
     required this.todoUseCase,
   });
 
