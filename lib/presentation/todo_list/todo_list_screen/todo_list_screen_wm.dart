@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_list/analytics/analytics_events_wrapper.dart';
+import 'package:todo_list/analytics/event/analytics_event.dart';
 import 'package:todo_list/domain/model/todo.dart';
 import 'package:todo_list/domain/use_case/todo_use_case.dart';
 import 'package:todo_list/internal/di/configure_dependencies.dart';
@@ -41,6 +43,7 @@ TodoListScreenWidgetModel defaultTodoListScreenWidgetModelFactory(
   return TodoListScreenWidgetModel(
     TodoListScreenModel(),
     todoUseCase: getIt.get<ITodoUseCase>(),
+    analyticsEventsWrapper: getIt.get<IAnalyticsEventsWrapper>(),
   );
 }
 
@@ -52,9 +55,11 @@ class TodoListScreenWidgetModel
   TodoListScreenWidgetModel(
     super._model, {
     required this.todoUseCase,
+    required this.analyticsEventsWrapper,
   });
 
   final ITodoUseCase todoUseCase;
+  final IAnalyticsEventsWrapper analyticsEventsWrapper;
 
   @override
   final EntityStateNotifier<List<Todo>> todoListState = EntityStateNotifier();
@@ -132,6 +137,7 @@ class TodoListScreenWidgetModel
   @override
   void toTodoDetail(Todo? todo) {
     router.navigate(TodoDetailRoute(todo: todo));
+    analyticsEventsWrapper.addEvent(AnalyticsEvent(name: 'to_todo_screen'));
   }
 
   @override
