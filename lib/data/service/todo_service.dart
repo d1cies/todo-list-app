@@ -17,7 +17,7 @@ abstract class TodoService {
   @GET('/list')
   Future<TodoListResponse> getTodoList();
 
-  @PATCH('list')
+  @PATCH('/list')
   Future<TodoListResponse> updateTodoList({
     @Body() required UpdateTodoListRequest request,
   });

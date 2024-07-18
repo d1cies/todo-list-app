@@ -20,9 +20,11 @@ class TodoTextField extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
       elevation: 2,
       child: TextField(
+        key: const ValueKey('todoTextField'),
         controller: textController,
         focusNode: textFocusNode,
         maxLines: null,
+        onTapOutside: (_) => FocusScope.of(context).unfocus(),
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
           hintText: AppLocalizations.of(context).hintTodoTextField,

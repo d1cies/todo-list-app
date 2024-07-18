@@ -17,17 +17,15 @@ Todo mapDtoToTodo(TodoElement dto) {
   );
 }
 
-TodoRequest mapTodoToRequest(Todo todo) {
-  return TodoRequest(
-    element: TodoElement(
-      id: todo.id,
-      text: todo.text,
-      importance: todo.importance,
-      deadline: todo.deadline?.millisecondsSinceEpoch,
-      done: todo.done,
-      createdAt: todo.createdAt,
-      changedAt: todo.changedAt,
-      lastUpdatedBy: todo.lastUpdatedBy,
-    ),
+TodoElement mapTodoToTodoElement(Todo todo) {
+  return TodoElement(
+    id: todo.id,
+    text: todo.text,
+    importance: todo.importance,
+    deadline: todo.deadline?.millisecondsSinceEpoch,
+    done: todo.done,
+    createdAt: todo.createdAt,
+    changedAt: todo.changedAt,
+    lastUpdatedBy: todo.lastUpdatedBy,
   );
 }

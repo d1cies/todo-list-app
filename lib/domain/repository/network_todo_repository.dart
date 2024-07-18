@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:todo_list/domain/model/todo.dart';
 
 abstract class INetworkTodoRepository {
-  FutureOr<List<Todo>> getTodoList();
+  Future<List<Todo>> getTodoList();
+
+  Future<List<Todo>> updateTodoList(List<Todo> todosList);
 
   Future<Todo> getTodo(String id);
 

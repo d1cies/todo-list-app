@@ -16,7 +16,7 @@ class SelectImportance extends StatelessWidget {
     return ButtonTheme(
       padding: EdgeInsets.zero,
       alignedDropdown: true,
-      child: DropdownMenu(
+      child: DropdownMenu<Importance>(
         trailingIcon: const SizedBox.shrink(),
         selectedTrailingIcon: const SizedBox.shrink(),
         initialSelection: wm.selectedImportanceController.value,
@@ -42,7 +42,7 @@ class SelectImportance extends StatelessWidget {
             final color = importance.key == Importance.important
                 ? colors.red
                 : colors.labelPrimary;
-            return DropdownMenuEntry(
+            return DropdownMenuEntry<Importance>(
               value: importance.key,
               label: importance.value,
               style: ButtonStyle(

@@ -11,6 +11,8 @@ import 'package:todo_list/presentation/todo_list/todo_list_screen/todo_list_scre
 import 'package:todo_list/router/app_router.dart';
 import 'package:todo_list/util/wm_base.dart';
 
+import '../../../internal/logger.dart';
+
 abstract interface class ITodoListScreenWidgetModel
     implements IWidgetModel, IThemeProvider {
   EntityStateNotifier<List<Todo>> get todoListState;
@@ -28,6 +30,8 @@ abstract interface class ITodoListScreenWidgetModel
   void toTodoDetail(Todo? todo);
 
   void changeDoneTodosVisibility();
+
+  Future<void> refreshTodoList();
 
   int get doneTodosCount;
 }
@@ -67,14 +71,22 @@ class TodoListScreenWidgetModel
   @override
   Future<void> initWidgetModel() async {
     super.initWidgetModel();
-    loadTodoList();
+    todoListState.loading();
     todoListStreamSb = todoUseCase.todoListStream.listen((todoList) {
+      /// sort by created time
+      todoList.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
+      /// update list
       currentTodoList(todoList);
+
+      /// update done counter
       doneTodoCountController.value = doneTodosCount;
     });
   }
 
-  Future<void> loadTodoList() async {
+  @override
+  Future<void> refreshTodoList() async {
+    logger.i('Refresh list by hands');
     todoListState.loading();
     try {
       await todoUseCase.getTodoList();
@@ -85,8 +97,8 @@ class TodoListScreenWidgetModel
 
   void currentTodoList(List<Todo> list) {
     if (showDoneTodosController.value) {
-       todoListState.content(list);
-       return;
+      todoListState.content(list);
+      return;
     }
     todoListState.content(list.where((todo) => !todo.done).toList());
   }

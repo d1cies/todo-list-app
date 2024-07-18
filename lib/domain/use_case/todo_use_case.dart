@@ -1,22 +1,25 @@
 import 'dart:async';
+import 'dart:math';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_list/domain/model/todo.dart';
 import 'package:todo_list/domain/repository/local_todo_repository.dart';
 import 'package:todo_list/domain/repository/network_todo_repository.dart';
+import 'package:todo_list/internal/logger.dart';
 import 'package:todo_list/util/lifecycle_component.dart';
 
 abstract class ITodoUseCase implements LifeCycleComponent {
   Stream<List<Todo>> get todoListStream;
+
+  List<Todo> get todoList;
 
   int get countDoneTodos;
 
   Future<void> getTodoList();
 
   List<Todo> get allCurrentTodoList;
-
-  Future<void> getTodo(String id);
 
   Future<void> createTodo(Todo todo);
 
@@ -40,34 +43,112 @@ class TodoUseCase implements ITodoUseCase {
   final BehaviorSubject<List<Todo>> _todoListStreamController =
       BehaviorSubject();
 
+  late final StreamSubscription<List<ConnectivityResult>>?
+      _connectivitySubscription;
+
   @override
   Stream<List<Todo>> get todoListStream => _todoListStreamController.stream;
 
+  @override
   int get countDoneTodos => _todoList.where((todo) => todo.done).length;
 
   List<Todo> _todoList = [];
 
   @override
-  void init() {}
+  List<Todo> get todoList => _todoList;
+
+  Future<List<ConnectivityResult>> get connectivityResult =>
+      Connectivity().checkConnectivity();
+
+  @override
+  void init() {
+    /// подписка на стрим, чтобы обновлять текущее состояние сети
+    _connectivitySubscription =
+        Connectivity().onConnectivityChanged.listen((result) async {
+      await getTodoList();
+    });
+  }
 
   @override
   void dispose() {
+    _connectivitySubscription?.cancel();
     _todoListStreamController.close();
   }
 
+  @override
   Future<void> getTodoList() async {
-    final int? localRevision = await _getRevision();
-    final networkTodoList = await _networkTodoRepository.getTodoList();
-    final localTodoList = await _localTodoRepository.getTodoList();
-    final int? networkRevision = await _getRevision();
-    if (localRevision == networkRevision) {
-      _todoListStreamController.add(networkTodoList);
-      _todoList = networkTodoList;
+    if (isInternetConnection(await connectivityResult)) {
+      logger.i('RECONNECT');
+      await syncLocalAndNetworkTodos();
     } else {
-      //TODO add handler in next homework (now not required)
+      logger.i('NO INTERNET');
+      final localTodoList = await _localTodoRepository.getTodoList();
+      _todoListStreamController.add(localTodoList);
+      _todoList = localTodoList;
+    }
+  }
+
+  /// синхронизация через сравнения полученных из жвух источников списков
+  /// приоритет отдается локальным данным всегда, кроме случая, если задача
+  /// с сервера была изменена позднее
+  Future<void> syncLocalAndNetworkTodos() async {
+    final localRevision = await _getRevision() ?? 1;
+    final localTodoList = await _localTodoRepository.getTodoList();
+    final networkTodoList = await _networkTodoRepository.getTodoList();
+    final networkRevision = await _getRevision() ?? 1;
+    await updateRevision(networkRevision, localRevision);
+    logger.i('Network revision $networkRevision');
+    if (networkRevision != localRevision ||
+        !sameTodos(networkTodoList, localTodoList)) {
+      if (localTodoList.isNotEmpty) {
+        final networkTodosMap = <String, Todo>{
+          for (final todo in networkTodoList) todo.id: todo
+        };
+        for (final todo in localTodoList) {
+          if (networkTodosMap.containsKey(todo.id)) {
+            final networkTodo = networkTodosMap[todo.id]!;
+            if (networkTodo != todo) {
+              if (networkTodo.changedAt > todo.changedAt) {
+                await _localTodoRepository.saveTodo(networkTodo);
+              } else {
+                await _networkTodoRepository.updateTodo(todo);
+              }
+            }
+          }
+        }
+
+        final updatedTodos = await _networkTodoRepository.updateTodoList(
+          await _localTodoRepository.getTodoList(),
+        );
+        _todoListStreamController.add(updatedTodos);
+        _todoList = updatedTodos;
+      } else {
+        _todoListStreamController.add(networkTodoList);
+        _todoList = networkTodoList;
+        if (localTodoList.isEmpty) {
+          for (final todo in networkTodoList) {
+            await _localTodoRepository.saveTodo(todo);
+          }
+        }
+      }
+    } else {
       _todoListStreamController.add(networkTodoList);
       _todoList = networkTodoList;
+      if (localTodoList.isEmpty) {
+        for (final todo in networkTodoList) {
+          await _localTodoRepository.saveTodo(todo);
+        }
+      }
     }
+  }
+
+  bool sameTodos(List<Todo> networkTodos, List<Todo> localTodos) {
+    return localTodos.every(networkTodos.contains);
+  }
+
+  Future<void> updateRevision(int networkRevision, int localRevision) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(revisionKey, max(networkRevision, localRevision));
   }
 
   @override
@@ -75,24 +156,29 @@ class TodoUseCase implements ITodoUseCase {
 
   @override
   Future<void> createTodo(Todo todo) async {
-    final createdTodo = await _networkTodoRepository.createTodo(todo);
     await _localTodoRepository.saveTodo(todo);
-    _todoList.insert(0, createdTodo);
+    final list = await _localTodoRepository.getTodoList();
+    _todoList = list;
     _todoListStreamController.add(_todoList);
+    if (isInternetConnection(await connectivityResult)) {
+      await _networkTodoRepository.createTodo(todo);
+    }
   }
 
   @override
   Future<void> updateTodo(Todo todo) async {
     final todoIndex = _todoList.indexWhere((t) => t.id == todo.id);
     var oldTodo = todo;
-    if (todoIndex != -1) {
-      oldTodo = _todoList[todoIndex];
-      _todoList[todoIndex] = todo;
-      _todoListStreamController.add(_todoList);
-    }
     try {
-      await _networkTodoRepository.updateTodo(todo);
       await _localTodoRepository.saveTodo(todo);
+      if (todoIndex != -1) {
+        oldTodo = _todoList[todoIndex];
+        _todoList[todoIndex] = todo;
+        _todoListStreamController.add(_todoList);
+      }
+      if (isInternetConnection(await connectivityResult)) {
+        await _networkTodoRepository.updateTodo(todo);
+      }
     } on Exception catch (e, s) {
       _todoList[todoIndex] = oldTodo;
       rethrow;
@@ -101,22 +187,23 @@ class TodoUseCase implements ITodoUseCase {
 
   @override
   Future<void> deleteTodo(String id) async {
-    final deletedTodo = await _networkTodoRepository.deleteTodo(id);
     await _localTodoRepository.deleteTodo(id);
-    final todoIndex = _todoList.indexWhere((t) => t.id == deletedTodo?.id);
-    if (todoIndex != -1) {
-      _todoList.removeAt(todoIndex);
-      _todoListStreamController.add(_todoList);
+    final list = await _localTodoRepository.getTodoList();
+    _todoList = list;
+    _todoListStreamController.add(_todoList);
+    if (isInternetConnection(await connectivityResult)) {
+      await _networkTodoRepository.deleteTodo(id);
     }
-  }
-
-  @override
-  Future<void> getTodo(String id) async {
-    await _networkTodoRepository.getTodo(id);
   }
 
   Future<int?> _getRevision() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getInt(revisionKey);
+  }
+
+  bool isInternetConnection(List<ConnectivityResult> result) {
+    final isInternetConnected = result.contains(ConnectivityResult.mobile) ||
+        result.contains(ConnectivityResult.wifi);
+    return isInternetConnected;
   }
 }

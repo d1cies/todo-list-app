@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AuthInterceptor extends Interceptor {
-
   final token = dotenv.env['TOKEN'];
 
   @override
