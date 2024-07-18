@@ -25,7 +25,7 @@ Future<void> startApp() async {
   configureDependencies();
 
   runApp(
-    TodoListApp(
+    const TodoListApp(
       environment: Environment.production,
     ),
   );
