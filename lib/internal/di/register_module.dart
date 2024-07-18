@@ -51,7 +51,6 @@ void initFbCrashlytics() {
   };
 }
 
-
 @module
 abstract class RegisterModule {
   @singleton
