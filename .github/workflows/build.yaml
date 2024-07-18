@@ -1,7 +1,5 @@
 name: build
 on:
-  push:
-    branches: [ "homework-4-ci" ]
   pull_request:
     branches:
       [ "main", "homework-4" ]
