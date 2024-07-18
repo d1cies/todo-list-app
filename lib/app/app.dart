@@ -58,7 +58,7 @@ class _TodoListAppState extends State<TodoListApp> {
           routerConfig: _appRouter.config(),
           theme: AppTheme.light(importanceColor: remoteColor).themeData,
           darkTheme: AppTheme.dark(importanceColor: remoteColor).themeData,
-          debugShowCheckedModeBanner: false,
+          debugShowCheckedModeBanner: widget.environment != Environment.prod,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
         );

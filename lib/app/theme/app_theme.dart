@@ -172,7 +172,7 @@ class AppTheme {
           ),
         ),
         extensions: [
-           ThemeColors(
+          ThemeColors(
             supportSeparator: AppColor.darkSeparator,
             supportOverlay: AppColor.darkOverlay,
             labelPrimary: AppColor.darkLabelPrimary,

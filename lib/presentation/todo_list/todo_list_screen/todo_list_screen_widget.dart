@@ -7,7 +7,6 @@ import 'package:todo_list/presentation/todo_list/todo_list_screen/components/sli
 import 'package:todo_list/presentation/todo_list/todo_list_screen/components/sliver_todo_list.dart';
 import 'package:todo_list/presentation/todo_list/todo_list_screen/todo_list_screen_wm.dart';
 
-// TODO: cover with documentation
 /// Main widget for TodoListScreen module
 @RoutePage()
 class TodoListScreenWidget
@@ -86,14 +85,6 @@ class TodoListScreenWidget
                       },
                     );
                   },
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: ElevatedButton(
-                  onPressed: () {
-                    throw Exception('fb crash');
-                  },
-                  child: Text('error'),
                 ),
               ),
             ],

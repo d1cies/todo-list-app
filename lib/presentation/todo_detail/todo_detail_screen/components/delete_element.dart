@@ -32,9 +32,7 @@ class DeleteElement extends StatelessWidget {
               SvgPicture.asset(
                 'assets/svg/trash.svg',
                 colorFilter: ColorFilter.mode(
-                  isNewTodo
-                      ? colors.labelDisable
-                      : colors.red,
+                  isNewTodo ? colors.labelDisable : colors.red,
                   BlendMode.srcIn,
                 ),
               ),
@@ -42,9 +40,7 @@ class DeleteElement extends StatelessWidget {
               Text(
                 localizations.delete,
                 style: text.body.copyWith(
-                  color: isNewTodo
-                      ? colors.labelDisable
-                      : colors.red,
+                  color: isNewTodo ? colors.labelDisable : colors.red,
                 ),
               ),
             ],

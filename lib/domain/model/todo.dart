@@ -36,7 +36,7 @@ class Todo with _$Todo {
         done: done,
         deadline: deadline,
         importance: importance ?? Importance.basic,
-        createdAt: createdAt ??  DateTime.now().millisecondsSinceEpoch,
+        createdAt: createdAt ?? DateTime.now().millisecondsSinceEpoch,
         changedAt: changedAt ?? DateTime.now().millisecondsSinceEpoch,
         lastUpdatedBy: lastUpdatedBy,
         color: color,
