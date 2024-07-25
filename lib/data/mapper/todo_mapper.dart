@@ -1,5 +1,4 @@
 import 'package:todo_list/data/dto/model/todo_element.dart';
-import 'package:todo_list/data/dto/request/todo_request.dart';
 import 'package:todo_list/domain/model/todo.dart';
 
 Todo mapDtoToTodo(TodoElement dto) {

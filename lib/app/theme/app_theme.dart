@@ -9,7 +9,7 @@ class AppTheme {
 
   AppTheme._(this.themeData);
 
-  factory AppTheme.light() {
+  factory AppTheme.light({Color? importanceColor}) {
     return AppTheme._(
       ThemeData.light(
         useMaterial3: true,
@@ -52,7 +52,7 @@ class AppTheme {
         dropdownMenuTheme: DropdownMenuThemeData(
           inputDecorationTheme: InputDecorationTheme(
             labelStyle: AppText.body.copyWith(
-              color: AppColor.lightSeparator,
+              color: AppColor.lightLabelTertiary,
             ),
             border: const OutlineInputBorder(
               borderSide: BorderSide(
@@ -63,16 +63,22 @@ class AppTheme {
               color: Colors.transparent,
             ),
           ),
+          menuStyle: MenuStyle(
+            padding: WidgetStateProperty.all(EdgeInsets.zero),
+            backgroundColor: WidgetStateProperty.all(
+              AppColor.lightBackElevated,
+            ),
+          ),
         ),
         extensions: [
-          const ThemeColors(
+          ThemeColors(
             supportSeparator: AppColor.lightSeparator,
             supportOverlay: AppColor.lightOverlay,
             labelPrimary: AppColor.lightLabelPrimary,
             labelSecondary: AppColor.lightLabelSecondary,
             labelTertiary: AppColor.lightLabelTertiary,
-            labelDisable: AppColor.lightLabelTertiary,
-            red: AppColor.lightRed,
+            labelDisable: AppColor.lightDisable,
+            red: importanceColor ?? AppColor.lightRed,
             green: AppColor.lightGreen,
             blue: AppColor.lightBlue,
             gray: AppColor.lightGray,
@@ -97,6 +103,107 @@ class AppTheme {
             ),
             subhead: AppText.subhead.copyWith(
               color: AppColor.lightLabelPrimary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  factory AppTheme.dark({Color? importanceColor}) {
+    return AppTheme._(
+      ThemeData.dark(
+        useMaterial3: true,
+      ).copyWith(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: AppColor.darkBackPrimary,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: AppColor.darkBackPrimary,
+          surfaceTintColor: AppColor.darkBackPrimary,
+        ),
+        checkboxTheme: CheckboxThemeData(
+          side: WidgetStateBorderSide.resolveWith(
+            (states) {
+              if (!states.contains(WidgetState.selected)) {
+                return const BorderSide(
+                  width: 2,
+                  color: AppColor.darkSeparator,
+                );
+              }
+              return null;
+            },
+          ),
+          fillColor: WidgetStateProperty.resolveWith(
+            (states) {
+              if (states.contains(WidgetState.selected)) {
+                return AppColor.darkGreen;
+              }
+              return Colors.transparent;
+            },
+          ),
+          checkColor: WidgetStateProperty.resolveWith(
+            (states) {
+              if (states.contains(WidgetState.selected)) {
+                return AppColor.darkBackSecondary;
+              }
+              return Colors.transparent;
+            },
+          ),
+        ),
+        dropdownMenuTheme: DropdownMenuThemeData(
+          inputDecorationTheme: InputDecorationTheme(
+            labelStyle: AppText.body.copyWith(
+              color: AppColor.darkLabelTertiary,
+            ),
+            border: const OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.transparent,
+              ),
+            ),
+            activeIndicatorBorder: const BorderSide(
+              color: Colors.transparent,
+            ),
+          ),
+          menuStyle: MenuStyle(
+            padding: WidgetStateProperty.all(EdgeInsets.zero),
+            backgroundColor: WidgetStateProperty.all(
+              AppColor.darkBackElevated,
+            ),
+          ),
+        ),
+        extensions: [
+          ThemeColors(
+            supportSeparator: AppColor.darkSeparator,
+            supportOverlay: AppColor.darkOverlay,
+            labelPrimary: AppColor.darkLabelPrimary,
+            labelSecondary: AppColor.darkLabelSecondary,
+            labelTertiary: AppColor.darkLabelTertiary,
+            labelDisable: AppColor.darkDisable,
+            red: importanceColor ?? AppColor.darkRed,
+            green: AppColor.darkGreen,
+            blue: AppColor.darkBlue,
+            gray: AppColor.darkGray,
+            grayLight: AppColor.darkGrayLight,
+            white: AppColor.darkWhite,
+            backPrimary: AppColor.darkBackPrimary,
+            backSecondary: AppColor.darkBackSecondary,
+            backElevated: AppColor.darkBackElevated,
+          ),
+          ThemeText(
+            largeTitle: AppText.largeTitle.copyWith(
+              color: AppColor.darkLabelPrimary,
+            ),
+            title: AppText.title.copyWith(
+              color: AppColor.darkLabelPrimary,
+            ),
+            button: AppText.button.copyWith(
+              color: AppColor.darkLabelPrimary,
+            ),
+            body: AppText.body.copyWith(
+              color: AppColor.darkLabelPrimary,
+            ),
+            subhead: AppText.subhead.copyWith(
+              color: AppColor.darkLabelPrimary,
             ),
           ),
         ],

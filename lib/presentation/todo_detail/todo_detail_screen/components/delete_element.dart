@@ -32,19 +32,15 @@ class DeleteElement extends StatelessWidget {
               SvgPicture.asset(
                 'assets/svg/trash.svg',
                 colorFilter: ColorFilter.mode(
-                  isNewTodo
-                      ? colors.labelPrimary.withOpacity(0.15)
-                      : colors.red,
-                  BlendMode.modulate,
+                  isNewTodo ? colors.labelDisable : colors.red,
+                  BlendMode.srcIn,
                 ),
               ),
               const SizedBox(width: 12),
               Text(
                 localizations.delete,
                 style: text.body.copyWith(
-                  color: isNewTodo
-                      ? colors.labelPrimary.withOpacity(0.15)
-                      : colors.red,
+                  color: isNewTodo ? colors.labelDisable : colors.red,
                 ),
               ),
             ],

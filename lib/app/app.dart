@@ -1,14 +1,18 @@
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:todo_list/app/theme/app_theme.dart';
 import 'package:todo_list/generated/app_localizations.dart';
+import 'package:todo_list/internal/firebase/firebase_remote_handler.dart';
 import 'package:todo_list/router/app_router.dart';
+import 'package:todo_list/util/ui/color_convert.dart';
 
 import 'environment/environment.dart';
 
 class TodoListApp extends StatefulWidget {
   final Environment environment;
-  TodoListApp({super.key, required this.environment});
+
+  const TodoListApp({super.key, required this.environment});
 
   @override
   State<TodoListApp> createState() => _TodoListAppState();
@@ -41,12 +45,24 @@ class _TodoListAppState extends State<TodoListApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: _appRouter.config(),
-      theme: AppTheme.light().themeData,
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
+    final remoteConfigHandler = GetIt.instance.get<FirebaseRemoteHandler>()
+      ..init();
+    return ValueListenableBuilder(
+      valueListenable: remoteConfigHandler.todoImportanceColorController,
+      builder: (context, appValue, _) {
+        Color? remoteColor;
+        if (appValue.isNotEmpty) {
+          remoteColor = getColorFromHex(appValue);
+        }
+        return MaterialApp.router(
+          routerConfig: _appRouter.config(),
+          theme: AppTheme.light(importanceColor: remoteColor).themeData,
+          darkTheme: AppTheme.dark(importanceColor: remoteColor).themeData,
+          debugShowCheckedModeBanner: widget.environment != Environment.prod,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+        );
+      },
     );
   }
 }

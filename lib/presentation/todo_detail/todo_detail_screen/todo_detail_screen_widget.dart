@@ -9,7 +9,6 @@ import 'package:todo_list/presentation/todo_detail/todo_detail_screen/components
 import 'package:todo_list/presentation/todo_detail/todo_detail_screen/components/todo_text_field.dart';
 import 'package:todo_list/presentation/todo_detail/todo_detail_screen/todo_detail_screen_wm.dart';
 
-// TODO: cover with documentation
 /// Main widget for TodoDetailScreen module
 @RoutePage()
 class TodoDetailScreenWidget
@@ -51,74 +50,76 @@ class TodoDetailScreenWidget
           ),
         ],
       ),
-      body: Center(
-        child: ListView(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 23,
-          ),
-          children: [
-            TodoTextField(
-              textController: wm.todoTextController,
-              textFocusNode: wm.todoTextFocusNode,
+      body: SafeArea(
+        child: Center(
+          child: ListView(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 23,
             ),
-            const SizedBox(height: 28),
-            Text(
-              wm.localizations.importance,
-              style: wm.text.body.copyWith(
-                color: wm.color.labelPrimary,
+            children: [
+              TodoTextField(
+                textController: wm.todoTextController,
+                textFocusNode: wm.todoTextFocusNode,
               ),
-            ),
-            SelectImportance(wm: wm),
-            const Divider(height: 0),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      wm.localizations.doneBy,
-                      style: wm.text.body.copyWith(
-                        color: wm.color.labelPrimary,
+              const SizedBox(height: 28),
+              Text(
+                wm.localizations.importance,
+                style: wm.text.body.copyWith(
+                  color: wm.color.labelPrimary,
+                ),
+              ),
+              SelectImportance(wm: wm),
+              const Divider(height: 0),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        wm.localizations.doneBy,
+                        style: wm.text.body.copyWith(
+                          color: wm.color.labelPrimary,
+                        ),
                       ),
-                    ),
-                    ValueListenableBuilder(
-                      valueListenable: wm.deadlineController,
-                      builder: (context, deadline, _) {
-                        if (deadline != null) {
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 4),
-                            child: Text(deadline.fromDateToString(context),
-                                style: wm.text.subhead.copyWith(
-                                  color: wm.color.blue,
-                                )),
-                          );
-                        }
-                        return const SizedBox.shrink();
-                      },
-                    ),
-                  ],
-                ),
-                ValueListenableBuilder(
-                  valueListenable: wm.deadlineEnableController,
-                  builder: (context, enabled, _) {
-                    return DateSwitch(
-                      enabled: enabled,
-                      switchDeadline: wm.switchDeadline,
-                    );
-                  },
-                ),
-              ],
-            ),
-            const Divider(),
-            DeleteElement(
-              isNewTodo: isNewTodo,
-              id: todo?.id,
-              deleteTodo: wm.deleteTodo,
-            ),
-          ],
+                      ValueListenableBuilder(
+                        valueListenable: wm.deadlineController,
+                        builder: (context, deadline, _) {
+                          if (deadline != null) {
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: Text(deadline.fromDateToString(context),
+                                  style: wm.text.subhead.copyWith(
+                                    color: wm.color.blue,
+                                  )),
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      ),
+                    ],
+                  ),
+                  ValueListenableBuilder(
+                    valueListenable: wm.deadlineEnableController,
+                    builder: (context, enabled, _) {
+                      return DateSwitch(
+                        enabled: enabled,
+                        switchDeadline: wm.switchDeadline,
+                      );
+                    },
+                  ),
+                ],
+              ),
+              const Divider(),
+              DeleteElement(
+                isNewTodo: isNewTodo,
+                id: todo?.id,
+                deleteTodo: wm.deleteTodo,
+              ),
+            ],
+          ),
         ),
       ),
     );

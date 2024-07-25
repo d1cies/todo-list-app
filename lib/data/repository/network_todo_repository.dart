@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_list/data/dto/request/todo_request.dart';
 import 'package:todo_list/data/dto/request/update_todo_list_request.dart';
 import 'package:todo_list/data/mapper/todo_mapper.dart';

@@ -36,4 +36,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get save => 'СОХРАНИТЬ';
+
+  @override
+  String get newTodo => 'Новое';
 }

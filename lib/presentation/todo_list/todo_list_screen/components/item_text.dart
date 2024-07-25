@@ -20,20 +20,21 @@ class ItemText extends StatelessWidget {
       children: [
         Text.rich(
           TextSpan(
-              text: todo.importance == Importance.important ? '!! ' : '',
-              style: text.body.copyWith(
-                color: colors.red,
-              ),
-              children: [
-                TextSpan(
-                  text: todo.text,
-                  style: text.body.copyWith(
-                    decoration: todo.done ? TextDecoration.lineThrough : null,
-                    decorationColor: colors.supportSeparator,
-                    color: todo.done ? colors.supportSeparator : null,
-                  ),
+            text: todo.importance == Importance.important ? '!! ' : '',
+            style: text.body.copyWith(
+              color: colors.red,
+            ),
+            children: [
+              TextSpan(
+                text: todo.text,
+                style: text.body.copyWith(
+                  decoration: todo.done ? TextDecoration.lineThrough : null,
+                  decorationColor: colors.supportSeparator,
+                  color: todo.done ? colors.supportSeparator : null,
                 ),
-              ]),
+              ),
+            ],
+          ),
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
         ),

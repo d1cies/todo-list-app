@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/app/theme/theme_color/theme_colors.dart';
-import 'package:todo_list/app/theme/theme_text/theme_text.dart';
 import 'package:todo_list/domain/model/importance.dart';
 import 'package:todo_list/domain/model/todo.dart';
 
@@ -17,7 +16,6 @@ class ItemCheckbox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<ThemeColors>()!;
-    final text = Theme.of(context).extension<ThemeText>()!;
     return SizedBox(
       width: 24,
       height: 24,

@@ -96,8 +96,12 @@ class _TodoItemState extends State<TodoItem> {
                   doneTodo: widget.doneTodo,
                 ),
                 const SizedBox(width: 15),
-                ItemText(todo: widget.todo),
-                const Spacer(),
+                Expanded(
+                  child: ItemText(
+                    todo: widget.todo,
+                  ),
+                ),
+                const SizedBox(width: 14),
                 Icon(
                   Icons.info_outline,
                   color: colors.labelTertiary,

@@ -25,7 +25,7 @@ Map<String, dynamic> _$$TodoImplToJson(_$TodoImpl instance) =>
       'id': instance.id,
       'text': instance.text,
       'done': instance.done,
-      'importance': _$ImportanceEnumMap[instance.importance]!,
+      'importance': _$ImportanceEnumMap[instance.importance],
       'createdAt': instance.createdAt,
       'changedAt': instance.changedAt,
       'lastUpdatedBy': instance.lastUpdatedBy,

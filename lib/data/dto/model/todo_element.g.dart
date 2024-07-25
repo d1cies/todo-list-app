@@ -23,11 +23,11 @@ Map<String, dynamic> _$$TodoElementImplToJson(_$TodoElementImpl instance) {
   final val = <String, dynamic>{
     'id': instance.id,
     'text': instance.text,
-    'importance': _$ImportanceEnumMap[instance.importance]!,
+    'importance': _$ImportanceEnumMap[instance.importance],
     'done': instance.done,
   };
 
-  void writeNotNull(String key, dynamic value) {
+  void writeNotNull(String key, value) {
     if (value != null) {
       val[key] = value;
     }

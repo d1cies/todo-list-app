@@ -18,11 +18,7 @@ class SliverTodoList extends StatelessWidget {
   BorderRadius _buildBorderRadius(int index, int length) {
     const radius = Radius.circular(8);
 
-    if (length == 1) {
-      return const BorderRadius.all(radius);
-    }
-
-    if (index == 1) {
+    if (index == 0) {
       return const BorderRadius.only(
         topLeft: radius,
         topRight: radius,
@@ -44,8 +40,33 @@ class SliverTodoList extends StatelessWidget {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       sliver: SliverList.builder(
-        itemCount: todos.length,
+        itemCount: todos.length + 1,
         itemBuilder: (context, index) {
+          if (index == todos.length) {
+            return InkWell(
+              onTap: () => wm.toTodoDetail(null),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  borderRadius: _buildBorderRadius(index, todos.length),
+                  color: wm.color.backSecondary,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 14,
+                    horizontal: 50,
+                  ),
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Text(
+                      wm.localizations.newTodo,
+                      style: wm.text.body
+                          .copyWith(color: wm.color.supportSeparator),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }
           final todo = todos[index];
           return TodoItem(
             todo: todo,

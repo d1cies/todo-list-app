@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class RevisionInterceptor extends Interceptor {
   final String revisionKey;
 
-  RevisionInterceptor({required this.revisionKey});
+  const RevisionInterceptor({required this.revisionKey});
 
   Future<int> _getCurrentRevision() async {
     final prefs = await SharedPreferences.getInstance();
@@ -26,7 +26,8 @@ class RevisionInterceptor extends Interceptor {
   }
 
   @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
+  void onResponse(
+      Response<dynamic> response, ResponseInterceptorHandler handler) {
     super.onResponse(response, handler);
     final revision = int.tryParse(
           (response.data as Map<String, dynamic>)['revision'].toString(),

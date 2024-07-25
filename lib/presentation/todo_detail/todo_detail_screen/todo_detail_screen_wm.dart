@@ -6,10 +6,10 @@ import 'package:todo_list/domain/model/importance.dart';
 import 'package:todo_list/domain/model/todo.dart';
 import 'package:todo_list/domain/use_case/todo_use_case.dart';
 import 'package:todo_list/internal/di/configure_dependencies.dart';
-import 'package:todo_list/util/device_info.dart';
-import 'package:todo_list/util/wm_base.dart';
 import 'package:todo_list/presentation/todo_detail/todo_detail_screen/todo_detail_screen_model.dart';
 import 'package:todo_list/presentation/todo_detail/todo_detail_screen/todo_detail_screen_widget.dart';
+import 'package:todo_list/util/device_info.dart';
+import 'package:todo_list/util/wm_base.dart';
 
 abstract interface class ITodoDetailScreenWidgetModel
     implements IWidgetModel, IThemeProvider {
@@ -46,14 +46,13 @@ TodoDetailScreenWidgetModel defaultTodoDetailScreenWidgetModelFactory(
   );
 }
 
-// TODO: cover with documentation
 /// Default widget model for TodoDetailScreenWidget
 class TodoDetailScreenWidgetModel
     extends WidgetModel<TodoDetailScreenWidget, TodoDetailScreenModel>
     with ThemeProvider
     implements ITodoDetailScreenWidgetModel {
   TodoDetailScreenWidgetModel(
-    super.model, {
+    super._model, {
     required this.todoUseCase,
   });
 
@@ -175,16 +174,7 @@ class TodoDetailScreenWidgetModel
         const Duration(days: 1000),
       ),
       builder: (context, child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light(
-              primary: color.blue,
-              surface: color.white,
-              onSurface: color.labelPrimary,
-            ),
-          ),
-          child: child!,
-        );
+        return child!;
       },
     );
     if (deadlineController.value == null) {

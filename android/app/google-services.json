@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "780300252645",
+    "project_id": "ya-todoshka",
+    "storage_bucket": "ya-todoshka.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:780300252645:android:6579a89b541079bdddab0c",
+        "android_client_info": {
+          "package_name": "yandex.ru.todo_list"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPDt_vMCjZAUGrvCTUdRv2kOcty36AGIM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

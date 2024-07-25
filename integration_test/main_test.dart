@@ -14,7 +14,7 @@ Future<void> mainTest() async {
 
   await _initServices();
   runApp(
-    TodoListApp(
+    const TodoListApp(
       environment: Environment.test,
     ),
   );
